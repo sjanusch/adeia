@@ -14,7 +14,7 @@ func TestK8sIngress(t *testing.T) {
 	RunSpecs(t, "K8sIngress Suite")
 }
 
-var _ = Describe("K8sIngress", func() {
+var _ = Describe("K8s Ingress", func() {
 	var fetcher *mocks.IngressFetcher
 	var syncer = &ingressSyncer{}
 
@@ -25,12 +25,12 @@ var _ = Describe("K8sIngress", func() {
 
 	Describe("Ingress Syncer", func() {
 		It("calls ingress fetcher", func() {
-			Expect(fetcher.Counter).To(Equal(0))
+			Expect(fetcher.FetchCallCount()).To(Equal(0))
 			Expect(syncer.Sync()).To(BeNil())
-			Expect(fetcher.Counter).To(Equal(1))
+			Expect(fetcher.FetchCallCount()).To(Equal(1))
 		})
 		It("return error when fetch fails", func() {
-			fetcher.Error = errors.New("Failed")
+			fetcher.FetchReturns(nil, errors.New("Failed"))
 			Expect(syncer.Sync()).NotTo(BeNil())
 		})
 	})
