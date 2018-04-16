@@ -22,10 +22,13 @@ func TestK8sIngress(t *testing.T) {
 var _ = Describe("K8s Ingress", func() {
 	var fetcher *mocks.IngressFetcher
 	var syncer = &sync.IngressSyncer{}
+	var applier *mocks.DomainApplier
 
 	BeforeEach(func() {
 		fetcher = &mocks.IngressFetcher{}
+		applier = &mocks.DomainApplier{}
 		syncer.Fetcher = fetcher
+		syncer.Applier = applier
 	})
 
 	Describe("Ingress Syncer", func() {
@@ -37,6 +40,17 @@ var _ = Describe("K8s Ingress", func() {
 		It("return error when fetch fails", func() {
 			fetcher.FetchReturns(nil, errors.New("Failed"))
 			Expect(syncer.Sync()).NotTo(BeNil())
+		})
+		It("calls applier", func() {
+			Expect(applier.ApplyCallCount()).To(Equal(0))
+			syncer.Sync()
+			Expect(applier.ApplyCallCount()).To(Equal(1))
+		})
+		It("does not apply if fetch fails", func() {
+			fetcher.FetchReturns(nil, errors.New("Failed"))
+			Expect(applier.ApplyCallCount()).To(Equal(0))
+			syncer.Sync()
+			Expect(applier.ApplyCallCount()).To(Equal(0))
 		})
 	})
 })

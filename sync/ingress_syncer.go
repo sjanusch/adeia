@@ -11,13 +11,22 @@ type ingressFetcher interface {
 	Fetch() ([]model.Domain, error)
 }
 
+//go:generate counterfeiter -o ../mocks/ingress_applier.go --fake-name DomainApplier . domainApplier
+type domainApplier interface {
+	Apply([]model.Domain) error
+}
+
 // IngressSyncer creates ingress for a list of domains
 type IngressSyncer struct {
 	Fetcher ingressFetcher
+	Applier domainApplier
 }
 
 // Sync fetchs a list of domains an create ingresses
 func (i *IngressSyncer) Sync() error {
-	var _, err = i.Fetcher.Fetch()
-	return err
+	list, err := i.Fetcher.Fetch()
+	if err != nil {
+		return err
+	}
+	return i.Applier.Apply(list)
 }
