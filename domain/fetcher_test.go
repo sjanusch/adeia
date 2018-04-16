@@ -18,11 +18,11 @@ func TestSyncer(t *testing.T) {
 
 var _ = Describe("DomainFetcher", func() {
 	var (
-		domainFetcher *fetcher
+		domainFetcher *Fetcher
 	)
 
 	BeforeEach(func() {
-		domainFetcher = &fetcher{}
+		domainFetcher = &Fetcher{}
 	})
 
 	Describe("Fetcher", func() {

@@ -6,9 +6,11 @@ package domain
 
 import "github.com/seibert-media/k8s-ingress/model"
 
-type fetcher struct{}
+// Fetcher get all domains.
+type Fetcher struct{}
 
-func (f *fetcher) Fetch() ([]model.Domain, error) {
+// Fetch domains from remote json endpoint.
+func (f *Fetcher) Fetch() ([]model.Domain, error) {
 	return []model.Domain{
 		"www.example.com",
 	}, nil
