@@ -7,6 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/pkg/errors"
 	"github.com/seibert-media/k8s-ingress/mocks"
+	"github.com/seibert-media/k8s-ingress/sync"
 )
 
 func TestK8sIngress(t *testing.T) {
@@ -16,11 +17,11 @@ func TestK8sIngress(t *testing.T) {
 
 var _ = Describe("K8s Ingress", func() {
 	var fetcher *mocks.IngressFetcher
-	var syncer = &ingressSyncer{}
+	var syncer = &sync.IngressSyncer{}
 
 	BeforeEach(func() {
 		fetcher = &mocks.IngressFetcher{}
-		syncer.fetcher = fetcher
+		syncer.Fetcher = fetcher
 	})
 
 	Describe("Ingress Syncer", func() {
