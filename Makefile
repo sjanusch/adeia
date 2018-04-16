@@ -59,7 +59,7 @@ gotest:
 	@go test -cover -race $(shell go list ./... | grep -v /vendor/)
 
 test:
-	@go get -u github.com/onsi/ginkgo/ginkgo
+	@go get github.com/onsi/ginkgo/ginkgo
 	@ginkgo -r -race -cover
 
 # install passed in tool project
@@ -152,12 +152,12 @@ vet:
 
 # lint entire repo (excluding vendor)
 lint:
-	@go get -u github.com/golang/lint/golint
+	@go get github.com/golang/lint/golint
 	@golint -min_confidence 1 $(shell go list ./... | grep -v /vendor/)
 
 # errcheck entire repo (excluding vendor)
 errcheck:
-	@go get -u github.com/kisielk/errcheck
+	@go get github.com/kisielk/errcheck
 	@errcheck -ignore '(Close|Write)' $(shell go list ./... | grep -v /vendor/)
 
 cover:
