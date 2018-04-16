@@ -19,11 +19,11 @@ If new dependencies get added while coding, make sure to add them using `dep ens
 ## Testing
 To run tests you can use:
 ```bash
-	make test
-	#or
-	go test
-	#or
-	ginkgo -r
+make test
+# or
+go test
+# or
+ginkgo -r
 ```
 
 ## Contributing
@@ -31,7 +31,8 @@ To run tests you can use:
 This application is developed using behavior driven development. 
 Please keep in mind to use this development method when contribution to the project.
 
-If you are new to BDD have a look at this video which inspired this project to use BDD: 
+If you are new to BDD have a look at this video which inspired this project to use BDD:
+ 
 https://www.youtube.com/watch?v=uFXfTXSSt4I
 
 Feedback and contributions are highly welcome. Feel free to file issues or pull requests.
