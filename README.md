@@ -24,7 +24,7 @@ To run tests you can use:
 
 ## Contributing
 
-This application is developt using behavior driven development. 
+This application is developed using behavior driven development. 
 Please keep in mind to use this development method when contribution to the project.
 
 If you are new to BDD have a look at this video which inspired this project to use BDD: 
