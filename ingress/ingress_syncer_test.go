@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package sync
+package ingress
 
 import (
 	"testing"
@@ -22,13 +22,13 @@ var _ = Describe("K8s Ingress", func() {
 	var (
 		fetcher *mocks.IngressFetcher
 		applier *mocks.DomainApplier
-		syncer  *IngressSyncer
+		syncer  *Syncer
 	)
 
 	BeforeEach(func() {
 		fetcher = &mocks.IngressFetcher{}
 		applier = &mocks.DomainApplier{}
-		syncer = &IngressSyncer{
+		syncer = &Syncer{
 			Fetcher: fetcher,
 			Applier: applier,
 		}

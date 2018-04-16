@@ -13,5 +13,5 @@ import (
 
 func TestK8sIngress(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "K8sIngress Suite")
+	RunSpecs(t, "K8s Ingress Suite")
 }
