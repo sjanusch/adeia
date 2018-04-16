@@ -1,4 +1,4 @@
-package k8s_ingress
+package main
 
 import (
 	"testing"

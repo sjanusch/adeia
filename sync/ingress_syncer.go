@@ -7,10 +7,12 @@ type ingressFetcher interface {
 	Fetch() ([]model.Domain, error)
 }
 
+// IngressSyncer creates ingress for a list of domains
 type IngressSyncer struct {
 	Fetcher ingressFetcher
 }
 
+// Sync fetchs a list of domains an create ingresses
 func (i *IngressSyncer) Sync() error {
 	var _, err = i.Fetcher.Fetch()
 	return err
