@@ -11,6 +11,9 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
+	"github.com/seibert-media/k8s-ingress/domain"
+	"github.com/seibert-media/k8s-ingress/ingress"
+	"github.com/seibert-media/k8s-ingress/mocks"
 )
 
 var (
@@ -31,6 +34,14 @@ func main() {
 
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
+
+	ingressSyncer := &ingress.Syncer{
+		Applier: &mocks.DomainApplier{},
+		Fetcher: &domain.Fetcher{},
+	}
+	if err := ingressSyncer.Sync(); err != nil {
+		glog.Exit(err)
+	}
 
 	fmt.Println("finished")
 }
