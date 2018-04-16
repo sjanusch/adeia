@@ -6,9 +6,10 @@ import (
 
 type IngressFetcher struct {
 	Counter int
+	Error error
 }
 
 func (i *IngressFetcher) Fetch() ([]model.Domain, error) {
 	i.Counter++
-	return nil, nil
+	return nil, i.Error
 }
