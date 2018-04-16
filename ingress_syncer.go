@@ -11,6 +11,6 @@ type ingressSyncer struct{
 }
 
 func (i *ingressSyncer) Sync() error {
-	i.fetcher.Fetch()
-	return nil
+	var _, err = i.fetcher.Fetch()
+	return err
 }
