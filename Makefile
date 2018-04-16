@@ -60,7 +60,7 @@ gotest:
 
 test:
 	@go get -u github.com/onsi/ginkgo/ginkgo
-	@ginkgo -r -race
+	@ginkgo -r -race -cover
 
 # install passed in tool project
 install:
@@ -152,15 +152,17 @@ vet:
 
 # lint entire repo (excluding vendor)
 lint:
+	@go get -u github.com/golang/lint/golint
 	@golint -min_confidence 1 $(shell go list ./... | grep -v /vendor/)
 
 # errcheck entire repo (excluding vendor)
 errcheck:
+	@go get -u github.com/kisielk/errcheck
 	@errcheck -ignore '(Close|Write)' $(shell go list ./... | grep -v /vendor/)
 
 cover:
-	go get github.com/haya14busa/goverage
-	go get github.com/schrej/godacov
+	@go get github.com/haya14busa/goverage
+	@go get github.com/schrej/godacov
 	goverage -v -coverprofile=coverage.out $(shell go list ./... | grep -v /vendor/)
 
 generate:
