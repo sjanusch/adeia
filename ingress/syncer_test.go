@@ -10,6 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/seibert-media/k8s-ingress/mocks"
 	"testing"
+	"github.com/seibert-media/k8s-ingress/model"
 )
 
 func TestSyncer(t *testing.T) {
@@ -53,6 +54,16 @@ var _ = Describe("Syncer", func() {
 			Expect(applier.ApplyCallCount()).To(Equal(0))
 			syncer.Sync()
 			Expect(applier.ApplyCallCount()).To(Equal(0))
+		})
+		It("gives the fetched domains to apply", func() {
+			list := []model.Domain{"A", "B"}
+			fetcher.FetchReturns(list, nil)
+			syncer.Sync()
+			Expect(applier.ApplyArgsForCall(0)).To(Equal(list))
+		})
+		It("returns apply error", func() {
+			applier.ApplyReturns(errors.New("Failed"))
+			Expect(syncer.Sync()).NotTo(BeNil())
 		})
 	})
 })
