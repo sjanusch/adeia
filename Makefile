@@ -31,3 +31,7 @@ cover:
 	go get github.com/haya14busa/goverage
 	go get github.com/schrej/godacov
 	goverage -v -coverprofile=coverage.out $(shell go list ./... | grep -v /vendor/)
+
+generate:
+	@go get github.com/maxbrunsfeld/counterfeiter
+	@go generate ./...
