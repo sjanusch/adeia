@@ -5,8 +5,8 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/seibert-media/k8s-ingress/mocks"
 	"github.com/pkg/errors"
+	"github.com/seibert-media/k8s-ingress/mocks"
 )
 
 func TestK8sIngress(t *testing.T) {
@@ -15,12 +15,12 @@ func TestK8sIngress(t *testing.T) {
 }
 
 var _ = Describe("K8sIngress", func() {
-	var fetcher*mocks.IngressFetcher
+	var fetcher *mocks.IngressFetcher
 	var syncer = &ingressSyncer{}
 
 	BeforeEach(func() {
-		fetcher= &mocks.IngressFetcher{}
-		syncer.fetcher= fetcher
+		fetcher = &mocks.IngressFetcher{}
+		syncer.fetcher = fetcher
 	})
 
 	Describe("Ingress Syncer", func() {

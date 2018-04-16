@@ -6,7 +6,7 @@ import (
 
 type IngressFetcher struct {
 	Counter int
-	Error error
+	Error   error
 }
 
 func (i *IngressFetcher) Fetch() ([]model.Domain, error) {

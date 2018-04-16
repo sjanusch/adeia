@@ -6,7 +6,7 @@ type ingressFetcher interface {
 	Fetch() ([]model.Domain, error)
 }
 
-type ingressSyncer struct{
+type ingressSyncer struct {
 	fetcher ingressFetcher
 }
 
