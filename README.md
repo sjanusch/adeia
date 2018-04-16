@@ -1,4 +1,4 @@
-## Kubernetes Deploy
+## Kubernetes Ingress
 
 Kubernetes Ingress is an application to deploy ingresse to k8s cluster depending on a list of domains provide by an http get call.
 
