@@ -5,6 +5,7 @@
 package domain
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/seibert-media/k8s-ingress/mocks"
@@ -18,7 +19,7 @@ func TestSyncer(t *testing.T) {
 	RunSpecs(t, "Domain Suite")
 }
 
-var _ = Describe("DomainFetcher", func() {
+var _ = Describe("Fetcher", func() {
 	var (
 		domainFetcher *Fetcher
 		httpClient    *mocks.DomainClient
@@ -28,10 +29,11 @@ var _ = Describe("DomainFetcher", func() {
 		httpClient = &mocks.DomainClient{}
 		domainFetcher = &Fetcher{
 			Client: httpClient,
+			URL:    "http://server.com/domains",
 		}
 	})
 
-	Describe("Fetcher", func() {
+	Describe("Fetch", func() {
 		It("returns no error", func() {
 			_, err := domainFetcher.Fetch()
 			Expect(err).To(BeNil())
@@ -47,6 +49,26 @@ var _ = Describe("DomainFetcher", func() {
 		It("does not-nil request", func() {
 			domainFetcher.Fetch()
 			Expect(httpClient.DoArgsForCall(0)).NotTo(BeNil())
+		})
+		It("is using right api url", func() {
+			domainFetcher.Fetch()
+			Expect(httpClient.DoArgsForCall(0).URL.String()).To(Equal("http://server.com/domains"))
+		})
+		It("is using different api url", func() {
+			domainFetcher.URL = "http://server.de/domains"
+			domainFetcher.Fetch()
+			Expect(httpClient.DoArgsForCall(0).URL.String()).To(Equal("http://server.de/domains"))
+		})
+		It("does error on empty url", func() {
+			domainFetcher.URL = ""
+			_, err := domainFetcher.Fetch()
+			Expect(err).NotTo(BeNil())
+		})
+		It("does return error if http call fails", func() {
+			domainFetcher.URL = "foo"
+			httpClient.DoReturns(nil, errors.New("test"))
+			_, err := domainFetcher.Fetch()
+			Expect(err).NotTo(BeNil())
 		})
 	})
 })

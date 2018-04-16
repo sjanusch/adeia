@@ -5,6 +5,7 @@
 package domain
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/seibert-media/k8s-ingress/model"
@@ -18,12 +19,19 @@ type client interface {
 // Fetcher get all domains.
 type Fetcher struct {
 	Client client
+	URL    string
 }
 
 // Fetch domains from remote json endpoint.
 func (f *Fetcher) Fetch() ([]model.Domain, error) {
-	req, _ := http.NewRequest("GET", "http://localhost", nil)
-	f.Client.Do(req)
+	if len(f.URL) < 1 {
+		return nil, errors.New("invalid URL")
+	}
+	req, _ := http.NewRequest("GET", f.URL, nil)
+	_, err := f.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
 	return []model.Domain{
 		"www.example.com",
 	}, nil
