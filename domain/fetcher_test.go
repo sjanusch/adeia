@@ -7,6 +7,8 @@ package domain
 import (
 	"testing"
 
+	"github.com/seibert-media/k8s-ingress/mocks"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -19,10 +21,14 @@ func TestSyncer(t *testing.T) {
 var _ = Describe("DomainFetcher", func() {
 	var (
 		domainFetcher *Fetcher
+		httpClient    *mocks.DomainClient
 	)
 
 	BeforeEach(func() {
-		domainFetcher = &Fetcher{}
+		httpClient = &mocks.DomainClient{}
+		domainFetcher = &Fetcher{
+			Client: httpClient,
+		}
 	})
 
 	Describe("Fetcher", func() {
@@ -33,6 +39,14 @@ var _ = Describe("DomainFetcher", func() {
 		It("returns one domain", func() {
 			list, _ := domainFetcher.Fetch()
 			Expect(list).To(HaveLen(1))
+		})
+		It("does http call", func() {
+			domainFetcher.Fetch()
+			Expect(httpClient.DoCallCount()).To(Equal(1))
+		})
+		It("does not-nil request", func() {
+			domainFetcher.Fetch()
+			Expect(httpClient.DoArgsForCall(0)).NotTo(BeNil())
 		})
 	})
 })
