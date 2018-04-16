@@ -7,16 +7,16 @@ import (
 )
 
 type DomainClient struct {
-	DoStub        func(*http.Request) (*http.Response, error)
-	doMutex       sync.RWMutex
-	doArgsForCall []struct {
-		arg1 *http.Request
+	GetStub        func(string) (*http.Response, error)
+	getMutex       sync.RWMutex
+	getArgsForCall []struct {
+		arg1 string
 	}
-	doReturns struct {
+	getReturns struct {
 		result1 *http.Response
 		result2 error
 	}
-	doReturnsOnCall map[int]struct {
+	getReturnsOnCall map[int]struct {
 		result1 *http.Response
 		result2 error
 	}
@@ -24,52 +24,52 @@ type DomainClient struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *DomainClient) Do(arg1 *http.Request) (*http.Response, error) {
-	fake.doMutex.Lock()
-	ret, specificReturn := fake.doReturnsOnCall[len(fake.doArgsForCall)]
-	fake.doArgsForCall = append(fake.doArgsForCall, struct {
-		arg1 *http.Request
+func (fake *DomainClient) Get(arg1 string) (*http.Response, error) {
+	fake.getMutex.Lock()
+	ret, specificReturn := fake.getReturnsOnCall[len(fake.getArgsForCall)]
+	fake.getArgsForCall = append(fake.getArgsForCall, struct {
+		arg1 string
 	}{arg1})
-	fake.recordInvocation("Do", []interface{}{arg1})
-	fake.doMutex.Unlock()
-	if fake.DoStub != nil {
-		return fake.DoStub(arg1)
+	fake.recordInvocation("Get", []interface{}{arg1})
+	fake.getMutex.Unlock()
+	if fake.GetStub != nil {
+		return fake.GetStub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	return fake.doReturns.result1, fake.doReturns.result2
+	return fake.getReturns.result1, fake.getReturns.result2
 }
 
-func (fake *DomainClient) DoCallCount() int {
-	fake.doMutex.RLock()
-	defer fake.doMutex.RUnlock()
-	return len(fake.doArgsForCall)
+func (fake *DomainClient) GetCallCount() int {
+	fake.getMutex.RLock()
+	defer fake.getMutex.RUnlock()
+	return len(fake.getArgsForCall)
 }
 
-func (fake *DomainClient) DoArgsForCall(i int) *http.Request {
-	fake.doMutex.RLock()
-	defer fake.doMutex.RUnlock()
-	return fake.doArgsForCall[i].arg1
+func (fake *DomainClient) GetArgsForCall(i int) string {
+	fake.getMutex.RLock()
+	defer fake.getMutex.RUnlock()
+	return fake.getArgsForCall[i].arg1
 }
 
-func (fake *DomainClient) DoReturns(result1 *http.Response, result2 error) {
-	fake.DoStub = nil
-	fake.doReturns = struct {
+func (fake *DomainClient) GetReturns(result1 *http.Response, result2 error) {
+	fake.GetStub = nil
+	fake.getReturns = struct {
 		result1 *http.Response
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *DomainClient) DoReturnsOnCall(i int, result1 *http.Response, result2 error) {
-	fake.DoStub = nil
-	if fake.doReturnsOnCall == nil {
-		fake.doReturnsOnCall = make(map[int]struct {
+func (fake *DomainClient) GetReturnsOnCall(i int, result1 *http.Response, result2 error) {
+	fake.GetStub = nil
+	if fake.getReturnsOnCall == nil {
+		fake.getReturnsOnCall = make(map[int]struct {
 			result1 *http.Response
 			result2 error
 		})
 	}
-	fake.doReturnsOnCall[i] = struct {
+	fake.getReturnsOnCall[i] = struct {
 		result1 *http.Response
 		result2 error
 	}{result1, result2}
@@ -78,8 +78,8 @@ func (fake *DomainClient) DoReturnsOnCall(i int, result1 *http.Response, result2
 func (fake *DomainClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.doMutex.RLock()
-	defer fake.doMutex.RUnlock()
+	fake.getMutex.RLock()
+	defer fake.getMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

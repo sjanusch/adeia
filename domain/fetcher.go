@@ -13,7 +13,7 @@ import (
 
 //go:generate counterfeiter -o ../mocks/domain_client.go --fake-name DomainClient . client
 type client interface {
-	Do(*http.Request) (*http.Response, error)
+	Get(string) (*http.Response, error)
 }
 
 // Fetcher get all domains.
@@ -27,10 +27,12 @@ func (f *Fetcher) Fetch() ([]model.Domain, error) {
 	if len(f.URL) < 1 {
 		return nil, errors.New("invalid URL")
 	}
-	req, _ := http.NewRequest("GET", f.URL, nil)
-	_, err := f.Client.Do(req)
+	resp, err := f.Client.Get(f.URL)
 	if err != nil {
 		return nil, err
+	}
+	if resp == nil {
+		return nil, errors.New("received empty response")
 	}
 	return []model.Domain{
 		"www.example.com",
