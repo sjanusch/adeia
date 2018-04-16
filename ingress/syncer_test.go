@@ -5,20 +5,19 @@
 package ingress
 
 import (
-	"testing"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/pkg/errors"
 	"github.com/seibert-media/k8s-ingress/mocks"
+	"testing"
 )
 
-func TestK8sIngress(t *testing.T) {
+func TestSyncer(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "K8sIngress Suite")
+	RunSpecs(t, "Syncer Suite")
 }
 
-var _ = Describe("K8s Ingress", func() {
+var _ = Describe("Syncer", func() {
 	var (
 		fetcher *mocks.IngressFetcher
 		applier *mocks.DomainApplier
@@ -34,7 +33,7 @@ var _ = Describe("K8s Ingress", func() {
 		}
 	})
 
-	Describe("Ingress Syncer", func() {
+	Describe("Sync", func() {
 		It("calls ingress fetcher", func() {
 			Expect(fetcher.FetchCallCount()).To(Equal(0))
 			Expect(syncer.Sync()).To(BeNil())
