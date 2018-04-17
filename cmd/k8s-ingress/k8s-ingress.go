@@ -5,8 +5,10 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
+	"os"
 	"runtime"
 
 	"github.com/golang/glog"
@@ -17,31 +19,39 @@ import (
 )
 
 var (
-	stagingPtr  = flag.Bool("staging", false, "staging status")
 	versionInfo = flag.Bool("version", true, "show version info")
-	dbg         = flag.Bool("debug", false, "enable debug mode")
-	sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
+	urlPtr      = flag.String("url", "", "url to api")
+	//stagingPtr  = flag.Bool("staging", false, "staging status")
+	//dbg         = flag.Bool("debug", false, "enable debug mode")
+	//sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
 )
 
 func main() {
 	defer glog.Flush()
 	glog.CopyStandardLogTo("info")
+	flag.Parse()
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	if *versionInfo {
 		fmt.Printf("-- //S/M k8s-ingress --\n")
 		version.PrintFull()
 	}
 
-	flag.Parse()
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	if err := do(); err != nil {
+		glog.Error(err)
+		os.Exit(1)
+	}
 
+	fmt.Println("finished")
+}
+
+func do() error {
+	if len(*urlPtr) == 0 {
+		return errors.New("parameter url missing")
+	}
 	ingressSyncer := &ingress.Syncer{
 		Applier: &mocks.DomainApplier{},
 		Fetcher: &domain.Fetcher{},
 	}
-	if err := ingressSyncer.Sync(); err != nil {
-		glog.Exit(err)
-	}
-
-	fmt.Println("finished")
+	return ingressSyncer.Sync()
 }
