@@ -121,8 +121,12 @@ var _ = Describe("Fetcher", func() {
 			})
 
 			It("returns an error", func() {
-				list, err := domainFetcher.Fetch()
+				_, err := domainFetcher.Fetch()
 				Expect(err).NotTo(BeNil())
+			})
+
+			It("returns an empty list", func() {
+				list, _ := domainFetcher.Fetch()
 				Expect(list).To(HaveLen(0))
 			})
 		})
