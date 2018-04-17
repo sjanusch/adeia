@@ -32,6 +32,9 @@ var _ = Describe("Fetcher", func() {
 
 	BeforeEach(func() {
 		httpClient = &mocks.DomainClient{}
+		httpClient.GetReturns(&http.Response{
+			Body: ioutil.NopCloser(bytes.NewBufferString(`["www.example.com"]`)),
+		}, nil)
 		domainFetcher = &Fetcher{
 			Client: httpClient,
 			URL:    "http://server.com/domains",
@@ -40,12 +43,10 @@ var _ = Describe("Fetcher", func() {
 
 	Describe("Fetch", func() {
 		It("returns no error", func() {
-			httpClient.GetReturns(&http.Response{}, nil)
 			_, err := domainFetcher.Fetch()
 			Expect(err).To(BeNil())
 		})
 		It("returns one domain", func() {
-			httpClient.GetReturns(&http.Response{}, nil)
 			list, _ := domainFetcher.Fetch()
 			Expect(list).To(HaveLen(1))
 		})
@@ -96,5 +97,21 @@ var _ = Describe("Fetcher", func() {
 				Expect(list[0]).To(Equal(model.Domain("example.com")))
 			})
 		})
+		Describe("when json list contains two domains", func() {
+
+			BeforeEach(func() {
+				response := &http.Response{}
+				response.Body = ioutil.NopCloser(bytes.NewBufferString(`["a.example.com","b.example.com"]`))
+				httpClient.GetReturns(response, nil)
+			})
+
+			It("returns a list with example.com", func() {
+				list, _ := domainFetcher.Fetch()
+				Expect(list).To(HaveLen(2))
+				Expect(list[0]).To(Equal(model.Domain("a.example.com")))
+				Expect(list[1]).To(Equal(model.Domain("b.example.com")))
+			})
+		})
+
 	})
 })

@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/seibert-media/k8s-ingress/model"
+	"encoding/json"
 )
 
 //go:generate counterfeiter -o ../mocks/domain_client.go --fake-name DomainClient . client
@@ -34,7 +35,7 @@ func (f *Fetcher) Fetch() ([]model.Domain, error) {
 	if resp == nil {
 		return nil, errors.New("received empty response")
 	}
-	return []model.Domain{
-		"example.com",
-	}, nil
+	result := []model.Domain{}
+	json.NewDecoder(resp.Body).Decode(&result)
+	return result, nil
 }
