@@ -1,4 +1,4 @@
-// Copyright 2018 The K8s-Ingress Authors. All rights reserved.
+// Copyright 2018 The adeia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -15,9 +15,9 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
-	"github.com/seibert-media/k8s-ingress/domain"
-	"github.com/seibert-media/k8s-ingress/ingress"
-	"github.com/seibert-media/k8s-ingress/mocks"
+	"github.com/seibert-media/adeia/domain"
+	"github.com/seibert-media/adeia/ingress"
+	"github.com/seibert-media/adeia/mocks"
 )
 
 var (
@@ -36,7 +36,7 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	if *versionPtr {
-		fmt.Printf("-- //S/M k8s-ingress --\n")
+		fmt.Printf("-- //S/M adeia --\n")
 		version.PrintFull()
 		os.Exit(0)
 	}

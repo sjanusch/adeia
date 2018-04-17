@@ -1,7 +1,7 @@
 package converter
 
 import (
-	"github.com/seibert-media/k8s-ingress/model"
+	"github.com/seibert-media/adeia/model"
 	"k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
