@@ -5,10 +5,11 @@
 package domain
 
 import (
-	"github.com/pkg/errors"
-	"net/http"
-	"github.com/seibert-media/k8s-ingress/model"
 	"encoding/json"
+	"net/http"
+
+	"github.com/pkg/errors"
+	"github.com/seibert-media/k8s-ingress/model"
 )
 
 //go:generate counterfeiter -o ../mocks/domain_client.go --fake-name DomainClient . client
