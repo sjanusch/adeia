@@ -16,15 +16,19 @@ type Creator struct {
 }
 
 var (
-	serviceName = "test"
+	serviceName = "test-service"
 	serverPort  = "8080"
-	name        = "GT"
-	namespace   = "GT-NAMESPACE"
+	name        = "test-name"
+	namespace   = "test-ns"
 )
 
 // Create ingress for the given domains.
 func (c *Creator) Create(domains []domain.Domain) *v1beta1.Ingress {
-	var ingress = v1beta1.Ingress{
+	return &v1beta1.Ingress{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "extensions/v1beta1",
+			Kind:       "Ingress",
+		},
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
 				"kubernetes.io/ingress.class": "traefik",
@@ -36,7 +40,6 @@ func (c *Creator) Create(domains []domain.Domain) *v1beta1.Ingress {
 			Rules: buildRuleSet(domains),
 		},
 	}
-	return &ingress
 }
 
 func buildRuleSet(domains []domain.Domain) []v1beta1.IngressRule {

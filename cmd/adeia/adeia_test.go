@@ -154,11 +154,11 @@ unknown - version unknown
 			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
   creationTimestamp: null
-  labels:
-    app: jenkins
-  name: jenkins
-  namespace: jenkins
+  name: test-name
+  namespace: test-ns
 spec:
   rules:
   - host: a.example.com
@@ -176,8 +176,7 @@ spec:
           servicePort: 8080
         path: /
 status:
-  loadBalancer: {}
-`))
+  loadBalancer: {}`))
 		})
 	})
 })
