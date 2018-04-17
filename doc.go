@@ -5,4 +5,5 @@
 /*
 K8s manages Ingresses based on a list.
 */
-package main
+
+package ingress
