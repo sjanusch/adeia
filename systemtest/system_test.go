@@ -13,6 +13,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	"fmt"
+	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/ghttp"
 )
 
@@ -41,6 +43,34 @@ var _ = AfterSuite(func() {
 	gexec.CleanupBuildArtifacts()
 })
 
+type args map[string]string
+
+func (a args) list() []string {
+	var result []string
+	for k, v := range a {
+		if len(v) == 0 {
+			result = append(result, fmt.Sprintf("-%s", k))
+		} else {
+			result = append(result, fmt.Sprintf("-%s=%s", k, v))
+		}
+	}
+	return result
+}
+
+var validargs args
+
+var _ = BeforeEach(func() {
+	validargs = map[string]string{
+		"logtostderr":  "",
+		"v":            "0",
+		"url":          server.URL(),
+		"service-name": "test-service",
+		"name":         "test-name",
+		"server-port": 	"8080",
+		"namespace": 	"test-namespace",
+	}
+})
+
 var _ = Describe("the k8s-ingress", func() {
 	var err error
 	It("return with exitcode != 0 without needed parameter", func() {
@@ -50,13 +80,46 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 	})
 	It("return with exitcode 0 if called with valid args", func() {
-		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url="+server.URL()), GinkgoWriter, GinkgoWriter)
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
+		Expect(len(server.ReceivedRequests())).To(Equal(1))
+	})
+	It("return error when service-name arg is missing", func() {
+		delete(validargs, "service-name")
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+		Expect(serverSession.Err).To(gbytes.Say("parameter service-name missing"))
+	})
+	It("return error when name arg is missing", func() {
+		delete(validargs, "name")
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+		Expect(serverSession.Err).To(gbytes.Say("parameter name missing"))
+	})
+	It("return error when server-port arg is missing", func() {
+		delete(validargs, "server-port")
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+		Expect(serverSession.Err).To(gbytes.Say("parameter server-port missing"))
+	})
+	It("return error when server-port arg is missing", func() {
+		delete(validargs, "namespace")
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+		Expect(serverSession.Err).To(gbytes.Say("parameter namespace missing"))
 	})
 	It("call given url", func() {
-		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url="+server.URL()), GinkgoWriter, GinkgoWriter)
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
