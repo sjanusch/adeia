@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	versionPtr = flag.Bool("version", true, "show version info")
+	versionPtr  = flag.Bool("version", false, "show version info")
 	urlPtr      = flag.String("url", "", "url to api")
 	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 	name        = flag.String("name", "", "name for ingress")
