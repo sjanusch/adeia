@@ -149,14 +149,14 @@ unknown - version unknown
 		})
 	})
 
-	It("writes ingress object to stdout", func() {
-		var err error
-		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
-		Expect(err).To(BeNil())
-		serverSession.Wait(time.Second)
-		Expect(serverSession.ExitCode()).To(Equal(0))
-		Expect(serverSession.Out).To(gbytes.Say("www.example.com"))
-	})
+	//It("writes ingress object to stdout", func() {
+	//	var err error
+	//	serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+	//	Expect(err).To(BeNil())
+	//	serverSession.Wait(time.Second)
+	//	Expect(serverSession.ExitCode()).To(Equal(0))
+	//	Expect(serverSession.Out).To(gbytes.Say("www.example.com"))
+	//})
 })
 
 func TestSystem(t *testing.T) {

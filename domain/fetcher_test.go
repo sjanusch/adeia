@@ -5,15 +5,16 @@
 package domain_test
 
 import (
-	"errors"
-	"net/http"
-	"github.com/seibert-media/k8s-ingress/mocks"
 	"bytes"
+	"errors"
 	"io/ioutil"
+	"net/http"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/seibert-media/k8s-ingress/model"
 	"github.com/seibert-media/k8s-ingress/domain"
+	"github.com/seibert-media/k8s-ingress/mocks"
+	"github.com/seibert-media/k8s-ingress/model"
 )
 
 var _ = Describe("Fetcher", func() {

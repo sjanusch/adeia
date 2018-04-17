@@ -6,11 +6,12 @@ package domain
 
 import (
 	"testing"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-func TestSyncer(t *testing.T) {
+func TestDomain(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Domain Suite")
 }

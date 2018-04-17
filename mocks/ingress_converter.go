@@ -8,23 +8,25 @@ import (
 	"k8s.io/api/extensions/v1beta1"
 )
 
-type DomainConverter struct {
-	ConvertStub        func([]model.Domain) *v1beta1.Ingress
+type IngressConverter struct {
+	ConvertStub        func([]model.Domain) (*v1beta1.Ingress, error)
 	convertMutex       sync.RWMutex
 	convertArgsForCall []struct {
 		arg1 []model.Domain
 	}
 	convertReturns struct {
 		result1 *v1beta1.Ingress
+		result2 error
 	}
 	convertReturnsOnCall map[int]struct {
 		result1 *v1beta1.Ingress
+		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *DomainConverter) Convert(arg1 []model.Domain) *v1beta1.Ingress {
+func (fake *IngressConverter) Convert(arg1 []model.Domain) (*v1beta1.Ingress, error) {
 	var arg1Copy []model.Domain
 	if arg1 != nil {
 		arg1Copy = make([]model.Domain, len(arg1))
@@ -41,43 +43,46 @@ func (fake *DomainConverter) Convert(arg1 []model.Domain) *v1beta1.Ingress {
 		return fake.ConvertStub(arg1)
 	}
 	if specificReturn {
-		return ret.result1
+		return ret.result1, ret.result2
 	}
-	return fake.convertReturns.result1
+	return fake.convertReturns.result1, fake.convertReturns.result2
 }
 
-func (fake *DomainConverter) ConvertCallCount() int {
+func (fake *IngressConverter) ConvertCallCount() int {
 	fake.convertMutex.RLock()
 	defer fake.convertMutex.RUnlock()
 	return len(fake.convertArgsForCall)
 }
 
-func (fake *DomainConverter) ConvertArgsForCall(i int) []model.Domain {
+func (fake *IngressConverter) ConvertArgsForCall(i int) []model.Domain {
 	fake.convertMutex.RLock()
 	defer fake.convertMutex.RUnlock()
 	return fake.convertArgsForCall[i].arg1
 }
 
-func (fake *DomainConverter) ConvertReturns(result1 *v1beta1.Ingress) {
+func (fake *IngressConverter) ConvertReturns(result1 *v1beta1.Ingress, result2 error) {
 	fake.ConvertStub = nil
 	fake.convertReturns = struct {
 		result1 *v1beta1.Ingress
-	}{result1}
+		result2 error
+	}{result1, result2}
 }
 
-func (fake *DomainConverter) ConvertReturnsOnCall(i int, result1 *v1beta1.Ingress) {
+func (fake *IngressConverter) ConvertReturnsOnCall(i int, result1 *v1beta1.Ingress, result2 error) {
 	fake.ConvertStub = nil
 	if fake.convertReturnsOnCall == nil {
 		fake.convertReturnsOnCall = make(map[int]struct {
 			result1 *v1beta1.Ingress
+			result2 error
 		})
 	}
 	fake.convertReturnsOnCall[i] = struct {
 		result1 *v1beta1.Ingress
-	}{result1}
+		result2 error
+	}{result1, result2}
 }
 
-func (fake *DomainConverter) Invocations() map[string][][]interface{} {
+func (fake *IngressConverter) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.convertMutex.RLock()
@@ -89,7 +94,7 @@ func (fake *DomainConverter) Invocations() map[string][][]interface{} {
 	return copiedInvocations
 }
 
-func (fake *DomainConverter) recordInvocation(key string, args []interface{}) {
+func (fake *IngressConverter) recordInvocation(key string, args []interface{}) {
 	fake.invocationsMutex.Lock()
 	defer fake.invocationsMutex.Unlock()
 	if fake.invocations == nil {

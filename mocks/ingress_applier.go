@@ -4,14 +4,14 @@ package mocks
 import (
 	"sync"
 
-	"github.com/seibert-media/k8s-ingress/model"
+	"k8s.io/api/extensions/v1beta1"
 )
 
-type DomainApplier struct {
-	ApplyStub        func(domains []model.Domain) error
+type IngressApplier struct {
+	ApplyStub        func(ingress *v1beta1.Ingress) error
 	applyMutex       sync.RWMutex
 	applyArgsForCall []struct {
-		domains []model.Domain
+		ingress *v1beta1.Ingress
 	}
 	applyReturns struct {
 		result1 error
@@ -23,21 +23,16 @@ type DomainApplier struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *DomainApplier) Apply(domains []model.Domain) error {
-	var domainsCopy []model.Domain
-	if domains != nil {
-		domainsCopy = make([]model.Domain, len(domains))
-		copy(domainsCopy, domains)
-	}
+func (fake *IngressApplier) Apply(ingress *v1beta1.Ingress) error {
 	fake.applyMutex.Lock()
 	ret, specificReturn := fake.applyReturnsOnCall[len(fake.applyArgsForCall)]
 	fake.applyArgsForCall = append(fake.applyArgsForCall, struct {
-		domains []model.Domain
-	}{domainsCopy})
-	fake.recordInvocation("Apply", []interface{}{domainsCopy})
+		ingress *v1beta1.Ingress
+	}{ingress})
+	fake.recordInvocation("Apply", []interface{}{ingress})
 	fake.applyMutex.Unlock()
 	if fake.ApplyStub != nil {
-		return fake.ApplyStub(domains)
+		return fake.ApplyStub(ingress)
 	}
 	if specificReturn {
 		return ret.result1
@@ -45,26 +40,26 @@ func (fake *DomainApplier) Apply(domains []model.Domain) error {
 	return fake.applyReturns.result1
 }
 
-func (fake *DomainApplier) ApplyCallCount() int {
+func (fake *IngressApplier) ApplyCallCount() int {
 	fake.applyMutex.RLock()
 	defer fake.applyMutex.RUnlock()
 	return len(fake.applyArgsForCall)
 }
 
-func (fake *DomainApplier) ApplyArgsForCall(i int) []model.Domain {
+func (fake *IngressApplier) ApplyArgsForCall(i int) *v1beta1.Ingress {
 	fake.applyMutex.RLock()
 	defer fake.applyMutex.RUnlock()
-	return fake.applyArgsForCall[i].domains
+	return fake.applyArgsForCall[i].ingress
 }
 
-func (fake *DomainApplier) ApplyReturns(result1 error) {
+func (fake *IngressApplier) ApplyReturns(result1 error) {
 	fake.ApplyStub = nil
 	fake.applyReturns = struct {
 		result1 error
 	}{result1}
 }
 
-func (fake *DomainApplier) ApplyReturnsOnCall(i int, result1 error) {
+func (fake *IngressApplier) ApplyReturnsOnCall(i int, result1 error) {
 	fake.ApplyStub = nil
 	if fake.applyReturnsOnCall == nil {
 		fake.applyReturnsOnCall = make(map[int]struct {
@@ -76,7 +71,7 @@ func (fake *DomainApplier) ApplyReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *DomainApplier) Invocations() map[string][][]interface{} {
+func (fake *IngressApplier) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.applyMutex.RLock()
@@ -88,7 +83,7 @@ func (fake *DomainApplier) Invocations() map[string][][]interface{} {
 	return copiedInvocations
 }
 
-func (fake *DomainApplier) recordInvocation(key string, args []interface{}) {
+func (fake *IngressApplier) recordInvocation(key string, args []interface{}) {
 	fake.invocationsMutex.Lock()
 	defer fake.invocationsMutex.Unlock()
 	if fake.invocations == nil {
