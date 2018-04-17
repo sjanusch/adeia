@@ -21,11 +21,8 @@ import (
 )
 
 var (
-	versionPtr = flag.Bool("version", false, "show version info")
-	urlPtr     = flag.String("url", "", "url to api")
-	//stagingPtr  = flag.Bool("staging", false, "staging status")
-	//dbg         = flag.Bool("debug", false, "enable debug mode")
-	//sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
+	versionPtr = flag.Bool("version", true, "show version info")
+	urlPtr      = flag.String("url", "", "url to api")
 	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 	name        = flag.String("name", "", "name for ingress")
 	serverPort  = flag.String("server-port", "", "port for ingress http-rule")
