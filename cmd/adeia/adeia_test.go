@@ -1,4 +1,4 @@
-// Copyright 2018 The K8s-Ingress Authors. All rights reserved.
+// Copyright 2018 The adeia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -24,7 +24,7 @@ var server *ghttp.Server
 
 var _ = BeforeSuite(func() {
 	var err error
-	pathToServerBinary, err = gexec.Build("github.com/seibert-media/k8s-ingress/cmd/k8s-ingress")
+	pathToServerBinary, err = gexec.Build("github.com/seibert-media/adeia/cmd/adeia")
 	Expect(err).NotTo(HaveOccurred())
 })
 
@@ -71,7 +71,7 @@ var _ = BeforeEach(func() {
 	}
 })
 
-var _ = Describe("the k8s-ingress", func() {
+var _ = Describe("the adeia", func() {
 	var err error
 
 	Describe("when asked for version", func() {
@@ -80,7 +80,7 @@ var _ = Describe("the k8s-ingress", func() {
 			Expect(err).To(BeNil())
 			serverSession.Wait(time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
-			Expect(serverSession.Out).To(gbytes.Say(`-- //S/M k8s-ingress --
+			Expect(serverSession.Out).To(gbytes.Say(`-- //S/M adeia --
 unknown - version unknown
   branch: 	unknown
   revision: 	unknown

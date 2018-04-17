@@ -1,8 +1,8 @@
-// Copyright 2018 The K8s-Ingress Authors. All rights reserved.
+// Copyright 2018 The adeia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package pkg_test
+package adeia_test
 
 import (
 	"testing"
@@ -10,9 +10,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/pkg/errors"
-	"github.com/seibert-media/k8s-ingress/pkg"
-	"github.com/seibert-media/k8s-ingress/pkg/domain"
-	"github.com/seibert-media/k8s-ingress/pkg/mocks"
+	"github.com/seibert-media/adeia"
+	"github.com/seibert-media/adeia/domain"
+	"github.com/seibert-media/adeia/mocks"
 )
 
 func TestSyncer(t *testing.T) {
@@ -25,14 +25,14 @@ var _ = Describe("Syncer", func() {
 		fetcher   *mocks.IngressFetcher
 		applier   *mocks.IngressApplier
 		converter *mocks.IngressCreator
-		syncer    *pkg.Syncer
+		syncer    *adeia.Syncer
 	)
 
 	BeforeEach(func() {
 		fetcher = &mocks.IngressFetcher{}
 		applier = &mocks.IngressApplier{}
 		converter = &mocks.IngressCreator{}
-		syncer = &pkg.Syncer{
+		syncer = &adeia.Syncer{
 			Applier: applier,
 			Fetcher: fetcher,
 			Creator: converter,

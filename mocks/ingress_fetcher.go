@@ -4,7 +4,7 @@ package mocks
 import (
 	"sync"
 
-	"github.com/seibert-media/k8s-ingress/pkg/domain"
+	"github.com/seibert-media/adeia/domain"
 )
 
 type IngressFetcher struct {

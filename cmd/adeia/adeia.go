@@ -1,4 +1,4 @@
-// Copyright 2018 The K8s-Ingress Authors. All rights reserved.
+// Copyright 2018 The adeia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -10,14 +10,12 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-
 	"net/http"
-
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
-	"github.com/seibert-media/k8s-ingress/pkg"
-	"github.com/seibert-media/k8s-ingress/pkg/domain"
-	"github.com/seibert-media/k8s-ingress/pkg/ingress"
+	"github.com/seibert-media/adeia/domain"
+	"github.com/seibert-media/adeia/ingress"
+	"github.com/seibert-media/adeia"
 )
 
 var (
@@ -36,7 +34,7 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	if *versionPtr {
-		fmt.Printf("-- //S/M k8s-ingress --\n")
+		fmt.Printf("-- //S/M adeia --\n")
 		version.PrintFull()
 		os.Exit(0)
 	}
@@ -63,7 +61,7 @@ func do() error {
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
 	}
-	ingressSyncer := &pkg.Syncer{
+	ingressSyncer := &adeia.Syncer{
 		Applier: &ingress.PrintApplier{},
 		Creator: &ingress.Creator{},
 		Fetcher: &domain.Fetcher{
