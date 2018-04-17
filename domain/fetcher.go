@@ -16,7 +16,7 @@ type client interface {
 	Get(string) (*http.Response, error)
 }
 
-// Fetcher get all domains.
+// Fetcher gets all domains from URL using Client.
 type Fetcher struct {
 	Client client
 	URL    string
