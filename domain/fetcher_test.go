@@ -7,22 +7,13 @@ package domain
 import (
 	"errors"
 	"net/http"
-	"testing"
-
 	"github.com/seibert-media/k8s-ingress/mocks"
-
 	"bytes"
 	"io/ioutil"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/k8s-ingress/model"
 )
-
-func TestSyncer(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Domain Suite")
-}
 
 var _ = Describe("Fetcher", func() {
 	var (
