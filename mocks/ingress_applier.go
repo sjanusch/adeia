@@ -4,7 +4,7 @@ package mocks
 import (
 	"sync"
 
-	"github.com/seibert-media/k8s-ingress/model"
+	"github.com/seibert-media/adeia/model"
 )
 
 type DomainApplier struct {

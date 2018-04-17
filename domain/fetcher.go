@@ -1,4 +1,4 @@
-// Copyright 2018 The K8s-Ingress Authors. All rights reserved.
+// Copyright 2018 The adeia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/seibert-media/k8s-ingress/model"
+	"github.com/seibert-media/adeia/model"
 )
 
 //go:generate counterfeiter -o ../mocks/domain_client.go --fake-name DomainClient . client
