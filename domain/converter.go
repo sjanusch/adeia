@@ -1,4 +1,4 @@
-package converter
+package domain
 
 import (
 	"github.com/seibert-media/k8s-ingress/model"

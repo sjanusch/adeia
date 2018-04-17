@@ -1,4 +1,4 @@
-package applier
+package domain
 
 import (
 	"github.com/seibert-media/k8s-ingress/model"
