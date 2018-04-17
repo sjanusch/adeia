@@ -14,7 +14,6 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/k8s-ingress/domain"
 	"github.com/seibert-media/k8s-ingress/mocks"
-	"github.com/seibert-media/k8s-ingress/model"
 )
 
 var _ = Describe("Fetcher", func() {
@@ -87,7 +86,7 @@ var _ = Describe("Fetcher", func() {
 			It("returns a list with example.com", func() {
 				list, _ := domainFetcher.Fetch()
 				Expect(list).To(HaveLen(1))
-				Expect(list[0]).To(Equal(model.Domain("example.com")))
+				Expect(list[0]).To(Equal(domain.Domain("example.com")))
 			})
 		})
 		Describe("when json list contains two domains", func() {
@@ -101,8 +100,8 @@ var _ = Describe("Fetcher", func() {
 			It("returns a list with example.com", func() {
 				list, _ := domainFetcher.Fetch()
 				Expect(list).To(HaveLen(2))
-				Expect(list[0]).To(Equal(model.Domain("a.example.com")))
-				Expect(list[1]).To(Equal(model.Domain("b.example.com")))
+				Expect(list[0]).To(Equal(domain.Domain("a.example.com")))
+				Expect(list[1]).To(Equal(domain.Domain("b.example.com")))
 			})
 		})
 		Describe("when json is not parseable", func() {

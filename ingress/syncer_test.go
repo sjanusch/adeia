@@ -10,9 +10,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/pkg/errors"
+	"github.com/seibert-media/k8s-ingress/domain"
 	"github.com/seibert-media/k8s-ingress/ingress"
 	"github.com/seibert-media/k8s-ingress/mocks"
-	"github.com/seibert-media/k8s-ingress/model"
 )
 
 func TestSyncer(t *testing.T) {
@@ -61,7 +61,7 @@ var _ = Describe("Syncer", func() {
 			Expect(applier.ApplyCallCount()).To(Equal(0))
 		})
 		It("gives the fetched domains to apply", func() {
-			list := []model.Domain{"A", "B"}
+			list := []domain.Domain{"A", "B"}
 			fetcher.FetchReturns(list, nil)
 			syncer.Sync()
 			Expect(converter.ConvertArgsForCall(0)).To(Equal(list))

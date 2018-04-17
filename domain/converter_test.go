@@ -8,13 +8,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/k8s-ingress/domain"
-	"github.com/seibert-media/k8s-ingress/model"
 )
 
 var _ = Describe("Fetcher", func() {
 	var (
 		domainConverter *domain.Converter
-		Domains         = []model.Domain{"http://server1.com/", "http://server2.com/"}
+		Domains         = []domain.Domain{"http://server1.com/", "http://server2.com/"}
 	)
 
 	BeforeEach(func() {

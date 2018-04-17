@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"github.com/seibert-media/k8s-ingress/model"
 	"k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -9,7 +8,7 @@ import (
 
 // Converter for transform domain to ingress
 type Converter struct {
-	Domains []model.Domain
+	Domains []Domain
 }
 
 var (
@@ -20,7 +19,7 @@ var (
 )
 
 // Convert to ingress
-func (c *Converter) Convert(domains []model.Domain) *v1beta1.Ingress {
+func (c *Converter) Convert(domains []Domain) *v1beta1.Ingress {
 	var ingress = v1beta1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
@@ -36,7 +35,7 @@ func (c *Converter) Convert(domains []model.Domain) *v1beta1.Ingress {
 	return &ingress
 }
 
-func buildRuleSet(domains []model.Domain) []v1beta1.IngressRule {
+func buildRuleSet(domains []Domain) []v1beta1.IngressRule {
 	var ingressRules []v1beta1.IngressRule
 	for _, domain := range domains {
 		ingressRule := v1beta1.IngressRule{

@@ -4,15 +4,15 @@ package mocks
 import (
 	"sync"
 
-	"github.com/seibert-media/k8s-ingress/model"
+	"github.com/seibert-media/k8s-ingress/domain"
 	"k8s.io/api/extensions/v1beta1"
 )
 
 type IngressConverter struct {
-	ConvertStub        func([]model.Domain) (*v1beta1.Ingress, error)
+	ConvertStub        func([]domain.Domain) (*v1beta1.Ingress, error)
 	convertMutex       sync.RWMutex
 	convertArgsForCall []struct {
-		arg1 []model.Domain
+		arg1 []domain.Domain
 	}
 	convertReturns struct {
 		result1 *v1beta1.Ingress
@@ -26,16 +26,16 @@ type IngressConverter struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *IngressConverter) Convert(arg1 []model.Domain) (*v1beta1.Ingress, error) {
-	var arg1Copy []model.Domain
+func (fake *IngressConverter) Convert(arg1 []domain.Domain) (*v1beta1.Ingress, error) {
+	var arg1Copy []domain.Domain
 	if arg1 != nil {
-		arg1Copy = make([]model.Domain, len(arg1))
+		arg1Copy = make([]domain.Domain, len(arg1))
 		copy(arg1Copy, arg1)
 	}
 	fake.convertMutex.Lock()
 	ret, specificReturn := fake.convertReturnsOnCall[len(fake.convertArgsForCall)]
 	fake.convertArgsForCall = append(fake.convertArgsForCall, struct {
-		arg1 []model.Domain
+		arg1 []domain.Domain
 	}{arg1Copy})
 	fake.recordInvocation("Convert", []interface{}{arg1Copy})
 	fake.convertMutex.Unlock()
@@ -54,7 +54,7 @@ func (fake *IngressConverter) ConvertCallCount() int {
 	return len(fake.convertArgsForCall)
 }
 
-func (fake *IngressConverter) ConvertArgsForCall(i int) []model.Domain {
+func (fake *IngressConverter) ConvertArgsForCall(i int) []domain.Domain {
 	fake.convertMutex.RLock()
 	defer fake.convertMutex.RUnlock()
 	return fake.convertArgsForCall[i].arg1
