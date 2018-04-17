@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  branch = "master"
-  name = "github.com/bborbe/io"
-  packages = ["."]
-  revision = "8c22cf733cf166b247318b0786eec0c7cad9208a"
-
-[[projects]]
   name = "github.com/ghodss/yaml"
   packages = ["."]
   revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
@@ -323,6 +317,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "57a28c6406277166f71bc2d95c61b8d3a4ede6a946ea43c66c1c851f98dc936d"
+  inputs-digest = "71462394aeef7c0fe7547f878660de8f9a26ac42b64d0273d0b93cfb4c2c84e6"
   solver-name = "gps-cdcl"
   solver-version = 1

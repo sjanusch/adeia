@@ -5,7 +5,8 @@
 package ingress
 
 import (
-	"github.com/bborbe/io"
+	"io"
+
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 	"k8s.io/api/extensions/v1beta1"
