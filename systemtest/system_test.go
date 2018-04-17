@@ -66,8 +66,8 @@ var _ = BeforeEach(func() {
 		"url":          server.URL(),
 		"service-name": "test-service",
 		"name":         "test-name",
-		"server-port": 	"8080",
-		"namespace": 	"test-namespace",
+		"server-port":  "8080",
+		"namespace":    "test-namespace",
 	}
 })
 
@@ -124,6 +124,20 @@ var _ = Describe("the k8s-ingress", func() {
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
 		Expect(len(server.ReceivedRequests())).To(Equal(1))
+	})
+	It("print version", func() {
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-version"), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).To(Equal(0))
+		Expect(serverSession.Out).To(gbytes.Say(`-- //S/M k8s-ingress --
+unknown - version unknown
+  branch: 	unknown
+  revision: 	unknown
+  build date: 	unknown
+  build user: 	unknown
+  go version: 	unknown
+`))
 	})
 })
 

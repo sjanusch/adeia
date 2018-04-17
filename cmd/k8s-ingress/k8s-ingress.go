@@ -21,8 +21,8 @@ import (
 )
 
 var (
-	versionInfo = flag.Bool("version", true, "show version info")
-	urlPtr      = flag.String("url", "", "url to api")
+	versionPtr = flag.Bool("version", false, "show version info")
+	urlPtr     = flag.String("url", "", "url to api")
 	//stagingPtr  = flag.Bool("staging", false, "staging status")
 	//dbg         = flag.Bool("debug", false, "enable debug mode")
 	//sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
@@ -38,9 +38,10 @@ func main() {
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	if *versionInfo {
+	if *versionPtr {
 		fmt.Printf("-- //S/M k8s-ingress --\n")
 		version.PrintFull()
+		os.Exit(0)
 	}
 
 	if err := do(); err != nil {
