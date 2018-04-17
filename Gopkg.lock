@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
     "proto",
@@ -200,6 +206,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c0aa310489e41d7e04ea49b1295dc17feec4b2895082755e0b15390f05eaf3a9"
+  inputs-digest = "a50e15a5333a20a4b9b94edf561d337fc27ff3127d7fd07145bd721c47adba6c"
   solver-name = "gps-cdcl"
   solver-version = 1
