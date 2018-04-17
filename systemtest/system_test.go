@@ -40,7 +40,7 @@ var _ = Describe("the k8s-ingress", func() {
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 	})
-	It("return with exitcode 0 if called with valid args and dryrun active", func() {
+	It("return with exitcode 0 if called with valid args", func() {
 		var err error
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url=http://localhost:8080"), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
