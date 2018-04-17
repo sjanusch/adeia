@@ -16,6 +16,7 @@ import (
 	"github.com/seibert-media/k8s-ingress/domain"
 	"github.com/seibert-media/k8s-ingress/ingress"
 	"github.com/seibert-media/k8s-ingress/mocks"
+	"net/http"
 )
 
 var (
@@ -51,7 +52,10 @@ func do() error {
 	}
 	ingressSyncer := &ingress.Syncer{
 		Applier: &mocks.DomainApplier{},
-		Fetcher: &domain.Fetcher{},
+		Fetcher: &domain.Fetcher{
+			URL:    *urlPtr,
+			Client: http.DefaultClient,
+		},
 	}
 	return ingressSyncer.Sync()
 }

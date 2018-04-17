@@ -8,6 +8,12 @@
   revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
 
 [[projects]]
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/kolide/kit"
   packages = ["version"]
@@ -43,6 +49,9 @@
   packages = [
     ".",
     "format",
+    "gbytes",
+    "gexec",
+    "ghttp",
     "internal/assertion",
     "internal/asyncassertion",
     "internal/oraclematcher",
@@ -112,6 +121,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7e26935435b78a301ae5d73ddc2d7d289a30d68c21f8971e064b33a41b9f2e59"
+  inputs-digest = "6d42eca679e4a814916790c4209ff3c6f9deef336f2c261d65beb73caef6ec67"
   solver-name = "gps-cdcl"
   solver-version = 1

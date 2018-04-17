@@ -12,19 +12,29 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	"net/http"
+	"github.com/onsi/gomega/ghttp"
+	"fmt"
+	"io/ioutil"
 )
 
 var pathToServerBinary string
 var serverSession *gexec.Session
+var server *ghttp.Server
 
 var _ = BeforeSuite(func() {
 	var err error
 	pathToServerBinary, err = gexec.Build("github.com/seibert-media/k8s-ingress/cmd/k8s-ingress")
 	Expect(err).NotTo(HaveOccurred())
+	server = ghttp.NewServer()
+	server.RouteToHandler(http.MethodGet, "/", func(responseWriter http.ResponseWriter, request *http.Request) {
+		fmt.Fprint(responseWriter, "hello world")
+	})
 })
 
 var _ = AfterSuite(func() {
 	gexec.CleanupBuildArtifacts()
+	server.Close()
 })
 
 var _ = AfterEach(func() {
@@ -42,10 +52,16 @@ var _ = Describe("the k8s-ingress", func() {
 	})
 	It("return with exitcode 0 if called with valid args", func() {
 		var err error
-		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url=http://localhost:8080"), GinkgoWriter, GinkgoWriter)
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url="+server.URL()), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
+	})
+	It("call given url", func() {
+		resp, _ := http.Get(server.URL())
+		content, _ := ioutil.ReadAll(resp.Body)
+		resp.Body.Close()
+		Expect(string(content)).To(Equal("hello world"))
 	})
 })
 
