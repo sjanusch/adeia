@@ -45,8 +45,6 @@ func main() {
 		glog.Error(err)
 		os.Exit(1)
 	}
-
-	fmt.Println("finished")
 }
 
 func do() error {
