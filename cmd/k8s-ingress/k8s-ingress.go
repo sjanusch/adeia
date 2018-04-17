@@ -62,6 +62,9 @@ func do() error {
 	if len(*serverPort) == 0 {
 		return errors.New("parameter server-port missing")
 	}
+	if len(*namespace) == 0 {
+		return errors.New("parameter namespace missing")
+	}
 	ingressSyncer := &ingress.Syncer{
 		Applier: &mocks.DomainApplier{},
 		Fetcher: &domain.Fetcher{},
