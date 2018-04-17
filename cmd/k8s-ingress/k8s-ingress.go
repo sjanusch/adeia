@@ -59,7 +59,7 @@ func do() error {
 		return errors.New("parameter name missing")
 	}
 	if len(*serverPort) == 0 {
-		return errors.New("bla")
+		return errors.New("parameter server-port missing")
 	}
 	ingressSyncer := &ingress.Syncer{
 		Applier: &mocks.DomainApplier{},

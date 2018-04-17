@@ -101,6 +101,7 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+		Expect(serverSession.Err).To(gbytes.Say("parameter server-port missing"))
 	})
 })
 
