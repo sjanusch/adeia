@@ -34,5 +34,9 @@ var _ = Describe("Fetcher", func() {
 			_, err := domainConverter.Convert()
 			Expect(err).To(BeNil())
 		})
+		It("returns correct count of ingress objects", func() {
+			ingresses, _ := domainConverter.Convert()
+			Expect(ingresses).To(HaveLen(1))
+		})
 	})
 })
