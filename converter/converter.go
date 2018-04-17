@@ -18,7 +18,7 @@ var (
 	namespace   = "GT-NAMESPACE"
 )
 
-func (c *Converter) Convert() (*v1beta1.Ingress) {
+func (c *Converter) Convert(domains []model.Domain) *v1beta1.Ingress {
 	var ingress = v1beta1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
@@ -28,13 +28,13 @@ func (c *Converter) Convert() (*v1beta1.Ingress) {
 			Namespace: namespace,
 		},
 		Spec: v1beta1.IngressSpec{
-			Rules: buildRuleSet(c.Domains),
+			Rules: buildRuleSet(domains),
 		},
 	}
 	return &ingress
 }
 
-func buildRuleSet(domains []model.Domain) ([]v1beta1.IngressRule) {
+func buildRuleSet(domains []model.Domain) []v1beta1.IngressRule {
 	var ingressRules []v1beta1.IngressRule
 	for _, domain := range domains {
 		ingressRule := v1beta1.IngressRule{

@@ -4,7 +4,9 @@
 
 package ingress
 
-import "github.com/seibert-media/k8s-ingress/model"
+import (
+	"github.com/seibert-media/k8s-ingress/model"
+)
 
 //go:generate counterfeiter -o ../mocks/ingress_fetcher.go --fake-name IngressFetcher . fetcher
 type fetcher interface {
@@ -13,13 +15,13 @@ type fetcher interface {
 
 //go:generate counterfeiter -o ../mocks/ingress_applier.go --fake-name DomainApplier . applier
 type applier interface {
-	Apply([]model.Domain) error
+	Apply(domains []model.Domain) error
 }
 
 // Syncer creates ingress for a list of domains
 type Syncer struct {
-	Fetcher fetcher
-	Applier applier
+	Fetcher   fetcher
+	Applier   applier
 }
 
 // Sync fetches a list of domains an create ingresses

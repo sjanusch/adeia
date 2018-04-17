@@ -8,10 +8,10 @@ import (
 )
 
 type DomainApplier struct {
-	ApplyStub        func([]model.Domain) error
+	ApplyStub        func(domains []model.Domain) error
 	applyMutex       sync.RWMutex
 	applyArgsForCall []struct {
-		arg1 []model.Domain
+		domains []model.Domain
 	}
 	applyReturns struct {
 		result1 error
@@ -23,21 +23,21 @@ type DomainApplier struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *DomainApplier) Apply(arg1 []model.Domain) error {
-	var arg1Copy []model.Domain
-	if arg1 != nil {
-		arg1Copy = make([]model.Domain, len(arg1))
-		copy(arg1Copy, arg1)
+func (fake *DomainApplier) Apply(domains []model.Domain) error {
+	var domainsCopy []model.Domain
+	if domains != nil {
+		domainsCopy = make([]model.Domain, len(domains))
+		copy(domainsCopy, domains)
 	}
 	fake.applyMutex.Lock()
 	ret, specificReturn := fake.applyReturnsOnCall[len(fake.applyArgsForCall)]
 	fake.applyArgsForCall = append(fake.applyArgsForCall, struct {
-		arg1 []model.Domain
-	}{arg1Copy})
-	fake.recordInvocation("Apply", []interface{}{arg1Copy})
+		domains []model.Domain
+	}{domainsCopy})
+	fake.recordInvocation("Apply", []interface{}{domainsCopy})
 	fake.applyMutex.Unlock()
 	if fake.ApplyStub != nil {
-		return fake.ApplyStub(arg1)
+		return fake.ApplyStub(domains)
 	}
 	if specificReturn {
 		return ret.result1
@@ -54,7 +54,7 @@ func (fake *DomainApplier) ApplyCallCount() int {
 func (fake *DomainApplier) ApplyArgsForCall(i int) []model.Domain {
 	fake.applyMutex.RLock()
 	defer fake.applyMutex.RUnlock()
-	return fake.applyArgsForCall[i].arg1
+	return fake.applyArgsForCall[i].domains
 }
 
 func (fake *DomainApplier) ApplyReturns(result1 error) {

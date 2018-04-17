@@ -9,11 +9,12 @@ import (
 	"testing"
 	"time"
 
+	"fmt"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gexec"
-	"fmt"
 	"github.com/onsi/gomega/gbytes"
+	"github.com/onsi/gomega/gexec"
 )
 
 var pathToServerBinary string
@@ -57,8 +58,8 @@ var _ = BeforeEach(func() {
 		"url":          "http://localhost:8080",
 		"service-name": "test-service",
 		"name":         "test-name",
-		"server-port": 	"8080",
-		"namespace": 	"test-namespace",
+		"server-port":  "8080",
+		"namespace":    "test-namespace",
 	}
 })
 
@@ -119,7 +120,7 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
-		Expect(serverSession.Out).To(gbytes.Say("Ingressobject"))
+		Expect(serverSession.Out).To(gbytes.Say("www.example.com"))
 	})
 })
 
