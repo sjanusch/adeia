@@ -7,6 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
+// Converter for transform domain to ingress
 type Converter struct {
 	Domains []model.Domain
 }
@@ -18,7 +19,8 @@ var (
 	namespace   = "GT-NAMESPACE"
 )
 
-func (c *Converter) Convert() (*v1beta1.Ingress) {
+// Convert to ingress
+func (c *Converter) Convert() *v1beta1.Ingress {
 	var ingress = v1beta1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
@@ -34,7 +36,7 @@ func (c *Converter) Convert() (*v1beta1.Ingress) {
 	return &ingress
 }
 
-func buildRuleSet(domains []model.Domain) ([]v1beta1.IngressRule) {
+func buildRuleSet(domains []model.Domain) []v1beta1.IngressRule {
 	var ingressRules []v1beta1.IngressRule
 	for _, domain := range domains {
 		ingressRule := v1beta1.IngressRule{
