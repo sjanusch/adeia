@@ -20,13 +20,13 @@ func TestSyncer(t *testing.T) {
 var _ = Describe("Fetcher", func() {
 	var (
 		domainConverter *Converter
-		Domains =  []model.Domain{"http://server1.com/", "http://server2.com/"}
+		Domains         = []model.Domain{"http://server1.com/", "http://server2.com/"}
 	)
 
 	BeforeEach(func() {
 		domainConverter = &Converter{
-			Domains : Domains,
-			}
+			Domains: Domains,
+		}
 	})
 
 	Describe("Convert", func() {
