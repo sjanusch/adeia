@@ -11,6 +11,8 @@ import (
 	"os"
 	"runtime"
 
+	"net/http"
+
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
 	"github.com/seibert-media/k8s-ingress/applier"
@@ -20,7 +22,7 @@ import (
 )
 
 var (
-	versionInfo = flag.Bool("version", false, "show version info")
+	versionPtr  = flag.Bool("version", false, "show version info")
 	urlPtr      = flag.String("url", "", "url to api")
 	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 	name        = flag.String("name", "", "name for ingress")
@@ -34,17 +36,16 @@ func main() {
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	if *versionInfo {
+	if *versionPtr {
 		fmt.Printf("-- //S/M k8s-ingress --\n")
 		version.PrintFull()
+		os.Exit(0)
 	}
 
 	if err := do(); err != nil {
 		glog.Error(err)
 		os.Exit(1)
 	}
-
-	fmt.Println("finished")
 }
 
 func do() error {
@@ -64,10 +65,13 @@ func do() error {
 		return errors.New("parameter namespace missing")
 	}
 	ingressSyncer := &ingress.Syncer{
-		Applier:   &applier.Applier{
+		Applier:&applier.Applier{
 			Converter: &converter.Converter{},
 		},
-		Fetcher:   &domain.Fetcher{},
+		Fetcher: &domain.Fetcher{
+			URL:    *urlPtr,
+			Client: http.DefaultClient,
+		},
 	}
 	return ingressSyncer.Sync()
 }
