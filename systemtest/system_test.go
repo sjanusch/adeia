@@ -63,21 +63,21 @@ var _ = BeforeEach(func() {
 })
 
 var _ = Describe("the k8s-ingress", func() {
-	It("return with exitcode != 0 without needed parameter", func() {
+	It("returns with exitcode != 0 without needed parameter", func() {
 		var err error
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 	})
-	It("return with exitcode 0 if called with valid args", func() {
+	It("returns with exitcode 0 if called with valid args", func() {
 		var err error
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
 	})
-	It("return error when service-name arg is missing", func() {
+	It("returns error when service-name arg is missing", func() {
 		var err error
 		delete(validargs, "service-name")
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
@@ -86,7 +86,7 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		Expect(serverSession.Err).To(gbytes.Say("parameter service-name missing"))
 	})
-	It("return error when name arg is missing", func() {
+	It("returns error when name arg is missing", func() {
 		var err error
 		delete(validargs, "name")
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
@@ -95,7 +95,7 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		Expect(serverSession.Err).To(gbytes.Say("parameter name missing"))
 	})
-	It("return error when server-port arg is missing", func() {
+	It("returns error when server-port arg is missing", func() {
 		var err error
 		delete(validargs, "server-port")
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
@@ -104,7 +104,7 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		Expect(serverSession.Err).To(gbytes.Say("parameter server-port missing"))
 	})
-	It("return error when server-port arg is missing", func() {
+	It("returns error when server-port arg is missing", func() {
 		var err error
 		delete(validargs, "namespace")
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
