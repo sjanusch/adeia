@@ -5,6 +5,8 @@
 package system_test
 
 import (
+	"io/ioutil"
+	"net/http"
 	"os/exec"
 	"testing"
 	"time"
@@ -12,10 +14,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
-	"net/http"
 	"github.com/onsi/gomega/ghttp"
-	"fmt"
-	"io/ioutil"
 )
 
 var pathToServerBinary string
@@ -27,9 +26,7 @@ var _ = BeforeSuite(func() {
 	pathToServerBinary, err = gexec.Build("github.com/seibert-media/k8s-ingress/cmd/k8s-ingress")
 	Expect(err).NotTo(HaveOccurred())
 	server = ghttp.NewServer()
-	server.RouteToHandler(http.MethodGet, "/", func(responseWriter http.ResponseWriter, request *http.Request) {
-		fmt.Fprint(responseWriter, "hello world")
-	})
+	server.RouteToHandler(http.MethodGet, "/", ghttp.RespondWithJSONEncoded(http.StatusOK, []string{"a.example.com", "b.example.com"}))
 })
 
 var _ = AfterSuite(func() {
@@ -61,7 +58,7 @@ var _ = Describe("the k8s-ingress", func() {
 		resp, _ := http.Get(server.URL())
 		content, _ := ioutil.ReadAll(resp.Body)
 		resp.Body.Close()
-		Expect(string(content)).To(Equal("hello world"))
+		Expect(string(content)).To(Equal(`["a.example.com","b.example.com"]`))
 	})
 })
 

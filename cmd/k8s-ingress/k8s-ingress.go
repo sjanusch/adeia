@@ -11,12 +11,13 @@ import (
 	"os"
 	"runtime"
 
+	"net/http"
+
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
 	"github.com/seibert-media/k8s-ingress/domain"
 	"github.com/seibert-media/k8s-ingress/ingress"
 	"github.com/seibert-media/k8s-ingress/mocks"
-	"net/http"
 )
 
 var (
