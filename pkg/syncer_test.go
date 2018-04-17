@@ -24,18 +24,18 @@ var _ = Describe("Syncer", func() {
 	var (
 		fetcher   *mocks.IngressFetcher
 		applier   *mocks.IngressApplier
-		converter *mocks.IngressConverter
+		converter *mocks.IngressCreator
 		syncer    *pkg.Syncer
 	)
 
 	BeforeEach(func() {
 		fetcher = &mocks.IngressFetcher{}
 		applier = &mocks.IngressApplier{}
-		converter = &mocks.IngressConverter{}
+		converter = &mocks.IngressCreator{}
 		syncer = &pkg.Syncer{
-			Applier:   applier,
-			Fetcher:   fetcher,
-			Converter: converter,
+			Applier: applier,
+			Fetcher: fetcher,
+			Creator: converter,
 		}
 	})
 
@@ -64,7 +64,7 @@ var _ = Describe("Syncer", func() {
 			list := []domain.Domain{"A", "B"}
 			fetcher.FetchReturns(list, nil)
 			syncer.Sync()
-			Expect(converter.ConvertArgsForCall(0)).To(Equal(list))
+			Expect(converter.CreateArgsForCall(0)).To(Equal(list))
 		})
 		It("returns apply error", func() {
 			applier.ApplyReturns(errors.New("Failed"))

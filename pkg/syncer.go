@@ -10,26 +10,26 @@ import (
 	"k8s.io/api/extensions/v1beta1"
 )
 
-//go:generate counterfeiter -o ../mocks/ingress_fetcher.go --fake-name IngressFetcher . fetcher
+//go:generate counterfeiter -o mocks/ingress_fetcher.go --fake-name IngressFetcher . fetcher
 type fetcher interface {
 	Fetch() ([]domain.Domain, error)
 }
 
-//go:generate counterfeiter -o ../mocks/ingress_applier.go --fake-name IngressApplier . applier
+//go:generate counterfeiter -o mocks/ingress_applier.go --fake-name IngressApplier . applier
 type applier interface {
 	Apply(ingress *v1beta1.Ingress) error
 }
 
-//go:generate counterfeiter -o ../mocks/ingress_converter.go --fake-name IngressConverter . converter
-type converter interface {
-	Convert([]domain.Domain) (*v1beta1.Ingress, error)
+//go:generate counterfeiter -o 	mocks/ingress_creator.go --fake-name IngressCreator . creator
+type creator interface {
+	Create(domains []domain.Domain) *v1beta1.Ingress
 }
 
 // Syncer creates ingress for a list of domains
 type Syncer struct {
-	Fetcher   fetcher
-	Converter converter
-	Applier   applier
+	Fetcher fetcher
+	Creator creator
+	Applier applier
 }
 
 // Sync fetches a list of domains an create ingresses
@@ -38,9 +38,5 @@ func (i *Syncer) Sync() error {
 	if err != nil {
 		return errors.Wrap(err, "fetch domain failed")
 	}
-	ingress, err := i.Converter.Convert(domains)
-	if err != nil {
-		return errors.Wrap(err, "convert domain to ingress failed")
-	}
-	return i.Applier.Apply(ingress)
+	return i.Applier.Apply(i.Creator.Create(domains))
 }

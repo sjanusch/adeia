@@ -7,7 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-// Converter for transform domain to ingress
+// Creator for transform domain to ingress
 type Creator struct {
 }
 
