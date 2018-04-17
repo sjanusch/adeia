@@ -9,33 +9,30 @@ import (
 
 type Converter struct {
 	Domains []model.Domain
-	Ingress v1beta1.Ingress
-
 }
 
 var (
-	serverNamePtr = "test"
-	serverPortPtr = "8080"
-	namePtr = "GT"
-	namespacePtr = "GT-NAMESPACE"
+	serviceName = "test"
+	serverPort  = "8080"
+	name        = "GT"
+	namespace   = "GT-NAMESPACE"
 )
 
-func (c *Converter) Convert() (v1beta1.Ingress, error) {
-
+func (c *Converter) Convert() (*v1beta1.Ingress, error) {
 
 	var ingress = v1beta1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
 				"kubernetes.io/ingress.class": "traefik",
 			},
-			Name:      namePtr,
-			Namespace: namespacePtr,
+			Name:      name,
+			Namespace: namespace,
 		},
 		Spec: v1beta1.IngressSpec{
 			Rules: buildRuleSet(c.Domains),
 		},
 	}
-	return ingress, nil
+	return &ingress, nil
 }
 
 func buildRuleSet(domains []model.Domain) ([]v1beta1.IngressRule) {
@@ -50,8 +47,8 @@ func buildRuleSet(domains []model.Domain) ([]v1beta1.IngressRule) {
 						{
 							Path: "/",
 							Backend: v1beta1.IngressBackend{
-								ServiceName: serverNamePtr,
-								ServicePort: intstr.Parse(serverPortPtr),
+								ServiceName: serviceName,
+								ServicePort: intstr.Parse(serverPort),
 							},
 						},
 					},
