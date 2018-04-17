@@ -12,20 +12,25 @@ type Converter struct {
 }
 
 func (c *Converter) Convert() ([]v1beta1.Ingress, error) {
-	return []v1beta1.Ingress{v1beta1.Ingress{
-		ObjectMeta: metav1.ObjectMeta{
-			Annotations: map[string]string{
-				"kubernetes.io/ingress.class": "traefik",
+	for _, domain := range c.Domains {
+		ingress := v1beta1.Ingress{
+			ObjectMeta: metav1.ObjectMeta{
+				Annotations: map[string]string{
+					"kubernetes.io/ingress.class": "traefik",
+				},
 			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: string("www.example.com"),
-					IngressRuleValue: v1beta1.IngressRuleValue{
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: string(domain),
+						IngressRuleValue: v1beta1.IngressRuleValue{
+						},
 					},
 				},
 			},
-		},
-	}}, nil
+		}
+		c.Ingress = append(c.Ingress, ingress)
+	}
+
+	return c.Ingress, nil
 }
