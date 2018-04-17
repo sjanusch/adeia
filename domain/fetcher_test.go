@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package domain
+package domain_test
 
 import (
 	"errors"
@@ -13,11 +13,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/k8s-ingress/model"
+	"github.com/seibert-media/k8s-ingress/domain"
 )
 
 var _ = Describe("Fetcher", func() {
 	var (
-		domainFetcher *Fetcher
+		domainFetcher *domain.Fetcher
 		httpClient    *mocks.DomainClient
 	)
 
@@ -26,7 +27,7 @@ var _ = Describe("Fetcher", func() {
 		httpClient.GetReturns(&http.Response{
 			Body: ioutil.NopCloser(bytes.NewBufferString(`["www.example.com"]`)),
 		}, nil)
-		domainFetcher = &Fetcher{
+		domainFetcher = &domain.Fetcher{
 			Client: httpClient,
 			URL:    "http://server.com/domains",
 		}

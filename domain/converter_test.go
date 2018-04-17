@@ -2,22 +2,23 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package domain
+package domain_test
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/k8s-ingress/model"
+	"github.com/seibert-media/k8s-ingress/domain"
 )
 
 var _ = Describe("Fetcher", func() {
 	var (
-		domainConverter *Converter
+		domainConverter *domain.Converter
 		Domains         = []model.Domain{"http://server1.com/", "http://server2.com/"}
 	)
 
 	BeforeEach(func() {
-		domainConverter = &Converter{
+		domainConverter = &domain.Converter{
 			Domains: Domains,
 		}
 	})
