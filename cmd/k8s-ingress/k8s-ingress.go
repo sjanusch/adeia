@@ -15,11 +15,11 @@ import (
 	"github.com/kolide/kit/version"
 	"github.com/seibert-media/k8s-ingress/domain"
 	"github.com/seibert-media/k8s-ingress/ingress"
-	"github.com/seibert-media/k8s-ingress/mocks"
+	"github.com/seibert-media/k8s-ingress/appliere"
 )
 
 var (
-	versionInfo = flag.Bool("version", true, "show version info")
+	versionInfo = flag.Bool("version", false, "show version info")
 	urlPtr      = flag.String("url", "", "url to api")
 	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 	name        = flag.String("name", "", "name for ingress")
@@ -63,7 +63,7 @@ func do() error {
 		return errors.New("parameter namespace missing")
 	}
 	ingressSyncer := &ingress.Syncer{
-		Applier: &mocks.DomainApplier{},
+		Applier: &appliere.Appliere{},
 		Fetcher: &domain.Fetcher{},
 	}
 	return ingressSyncer.Sync()

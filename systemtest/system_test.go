@@ -113,6 +113,14 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		Expect(serverSession.Err).To(gbytes.Say("parameter namespace missing"))
 	})
+	It("writes ingress object to stdout", func() {
+		var err error
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).To(Equal(0))
+		Expect(serverSession.Out).To(gbytes.Say("Ingressobject"))
+	})
 })
 
 func TestSystem(t *testing.T) {
