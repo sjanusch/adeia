@@ -5,11 +5,10 @@
 package ingress
 
 import (
-	"k8s.io/api/extensions/v1beta1"
 	"github.com/bborbe/io"
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
-	"os"
+	"k8s.io/api/extensions/v1beta1"
 )
 
 // PrintApplier add ingress to k8sapplier/applier.go:18.
@@ -21,7 +20,7 @@ type PrintApplier struct {
 func (a *PrintApplier) Apply(ingress *v1beta1.Ingress) error {
 	content, err := yaml.Marshal(ingress)
 	if err != nil {
-		return errors.Wrap(err,"marshal yaml failed")
+		return errors.Wrap(err, "marshal yaml failed")
 	}
 	a.Out.Write(content)
 	return nil

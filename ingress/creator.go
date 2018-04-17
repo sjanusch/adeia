@@ -22,7 +22,7 @@ var (
 	namespace   = "GT-NAMESPACE"
 )
 
-// Convert to ingress
+// Create ingress for the given domains.
 func (c *Creator) Create(domains []domain.Domain) *v1beta1.Ingress {
 	var ingress = v1beta1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{

@@ -8,14 +8,15 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"runtime"
-	"net/http"
+
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
+	"github.com/seibert-media/adeia"
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/ingress"
-	"github.com/seibert-media/adeia"
 )
 
 var (

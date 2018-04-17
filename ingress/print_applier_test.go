@@ -1,11 +1,12 @@
 package ingress_test
 
 import (
+	"bytes"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/adeia/ingress"
 	"k8s.io/api/extensions/v1beta1"
-	"bytes"
 )
 
 var _ = Describe("the PrintApplier", func() {

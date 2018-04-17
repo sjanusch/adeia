@@ -15,5 +15,4 @@ type K8sApplier struct {
 // Apply a list of domains
 func (a *K8sApplier) Apply(ingress *v1beta1.Ingress) error {
 	panic("implement me")
-	return nil
 }
