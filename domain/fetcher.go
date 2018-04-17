@@ -35,6 +35,6 @@ func (f *Fetcher) Fetch() ([]model.Domain, error) {
 		return nil, errors.New("received empty response")
 	}
 	return []model.Domain{
-		"www.example.com",
+		"example.com",
 	}, nil
 }

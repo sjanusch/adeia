@@ -11,8 +11,12 @@ import (
 
 	"github.com/seibert-media/k8s-ingress/mocks"
 
+	"bytes"
+	"io/ioutil"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/seibert-media/k8s-ingress/model"
 )
 
 func TestSyncer(t *testing.T) {
@@ -77,6 +81,20 @@ var _ = Describe("Fetcher", func() {
 			httpClient.GetReturns(nil, nil)
 			_, err := domainFetcher.Fetch()
 			Expect(err).NotTo(BeNil())
+		})
+		Describe("when json list contains example.com", func() {
+
+			BeforeEach(func() {
+				response := &http.Response{}
+				response.Body = ioutil.NopCloser(bytes.NewBufferString(`["example.com"]`))
+				httpClient.GetReturns(response, nil)
+			})
+
+			It("returns a list with example.com", func() {
+				list, _ := domainFetcher.Fetch()
+				Expect(list).To(HaveLen(1))
+				Expect(list[0]).To(Equal(model.Domain("example.com")))
+			})
 		})
 	})
 })
