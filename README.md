@@ -1,10 +1,13 @@
-## Kubernetes Ingress
-[![Go Report Card](https://goreportcard.com/badge/github.com/seibert-media/k8s-ingress)](https://goreportcard.com/report/github.com/seibert-media/k8s-ingress)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/513590eff4e54095a25b66bf65bd1323)](https://www.codacy.com/app/kwiesmueller/k8s-ingress?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=seibert-media/k8s-ingress&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/seibert-media/k8s-ingress.svg?branch=master)](https://travis-ci.org/seibert-media/k8s-ingress)
-[![Docker Repository on Quay](https://quay.io/repository/seibertmedia/k8s-ingress/status "Docker Repository on Quay")](https://quay.io/repository/seibertmedia/k8s-ingress)
+## Adeia
+[![Go Report Card](https://goreportcard.com/badge/github.com/seibert-media/adeia)](https://goreportcard.com/report/github.com/seibert-media/adeia)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/513590eff4e54095a25b66bf65bd1323)](https://www.codacy.com/app/kwiesmueller/adeia?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=seibert-media/adeia&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/seibert-media/adeia.svg?branch=master)](https://travis-ci.org/seibert-media/adeia)
+[![Docker Repository on Quay](https://quay.io/repository/seibertmedia/adeia/status "Docker Repository on Quay")](https://quay.io/repository/seibertmedia/adeia)
 
-Kubernetes Ingress is an application to deploy ingresse to k8s cluster depending on a list of domains provide by an http get call.
+Adeia is an application to deploy ingresses to a kubernetes cluster depending on a list of domains provided by an http get call
+
+## Name
+Adeia is originating from the Greek word `άδεια` meaning permit in English.
 
 ## Requirements
 

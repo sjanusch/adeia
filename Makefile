@@ -11,11 +11,11 @@
 # Parts of this makefile are based upon github.com/kolide/kit
 #
 
-NAME		:= k8s-ingress
+NAME		:= adeia
 REPO		:= seibert-media
 GIT_HOST	:= github.com
 REGISTRY	:= quay.io
-IMAGE		:= seibertmedia/k8s-ingress
+IMAGE		:= seibertmedia/adeia
 
 PATH 		:= $(GOPATH)/bin:$(PATH)
 
