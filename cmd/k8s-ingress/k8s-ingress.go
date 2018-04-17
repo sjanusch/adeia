@@ -22,12 +22,12 @@ import (
 )
 
 var (
-	versionPtr  = flag.Bool("version", false, "show version info")
-	urlPtr      = flag.String("url", "", "url to api")
-	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
-	name        = flag.String("name", "", "name for ingress")
-	serverPort  = flag.String("server-port", "", "port for ingress http-rule")
-	namespace   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
+	versionPtr     = flag.Bool("version", false, "show version info")
+	urlPtr         = flag.String("url", "", "url to api")
+	namePtr        = flag.String("name", "", "name for ingress")
+	serviceNamePtr = flag.String("service-name", "", "service name for ingress http-rule")
+	serverPortPtr  = flag.String("server-port", "", "port for ingress http-rule")
+	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 )
 
 func main() {
@@ -52,16 +52,16 @@ func do() error {
 	if len(*urlPtr) == 0 {
 		return errors.New("parameter url missing")
 	}
-	if len(*serviceName) == 0 {
+	if len(*serviceNamePtr) == 0 {
 		return errors.New("parameter service-name missing")
 	}
-	if len(*name) == 0 {
+	if len(*namePtr) == 0 {
 		return errors.New("parameter name missing")
 	}
-	if len(*serverPort) == 0 {
+	if len(*serverPortPtr) == 0 {
 		return errors.New("parameter server-port missing")
 	}
-	if len(*namespace) == 0 {
+	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
 	}
 	ingressSyncer := &pkg.Syncer{
