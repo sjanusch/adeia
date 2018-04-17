@@ -4,26 +4,26 @@ package mocks
 import (
 	"sync"
 
-	"github.com/seibert-media/adeia/model"
+	"github.com/seibert-media/adeia/domain"
 )
 
 type IngressFetcher struct {
-	FetchStub        func() ([]model.Domain, error)
+	FetchStub        func() ([]domain.Domain, error)
 	fetchMutex       sync.RWMutex
 	fetchArgsForCall []struct{}
 	fetchReturns     struct {
-		result1 []model.Domain
+		result1 []domain.Domain
 		result2 error
 	}
 	fetchReturnsOnCall map[int]struct {
-		result1 []model.Domain
+		result1 []domain.Domain
 		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *IngressFetcher) Fetch() ([]model.Domain, error) {
+func (fake *IngressFetcher) Fetch() ([]domain.Domain, error) {
 	fake.fetchMutex.Lock()
 	ret, specificReturn := fake.fetchReturnsOnCall[len(fake.fetchArgsForCall)]
 	fake.fetchArgsForCall = append(fake.fetchArgsForCall, struct{}{})
@@ -44,24 +44,24 @@ func (fake *IngressFetcher) FetchCallCount() int {
 	return len(fake.fetchArgsForCall)
 }
 
-func (fake *IngressFetcher) FetchReturns(result1 []model.Domain, result2 error) {
+func (fake *IngressFetcher) FetchReturns(result1 []domain.Domain, result2 error) {
 	fake.FetchStub = nil
 	fake.fetchReturns = struct {
-		result1 []model.Domain
+		result1 []domain.Domain
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *IngressFetcher) FetchReturnsOnCall(i int, result1 []model.Domain, result2 error) {
+func (fake *IngressFetcher) FetchReturnsOnCall(i int, result1 []domain.Domain, result2 error) {
 	fake.FetchStub = nil
 	if fake.fetchReturnsOnCall == nil {
 		fake.fetchReturnsOnCall = make(map[int]struct {
-			result1 []model.Domain
+			result1 []domain.Domain
 			result2 error
 		})
 	}
 	fake.fetchReturnsOnCall[i] = struct {
-		result1 []model.Domain
+		result1 []domain.Domain
 		result2 error
 	}{result1, result2}
 }

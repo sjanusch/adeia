@@ -2,31 +2,30 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package domain
+package domain_test
 
 import (
-	"errors"
-	"net/http"
-	"testing"
-
-	"github.com/seibert-media/adeia/mocks"
-
 	"bytes"
+	"errors"
 	"io/ioutil"
+	"net/http"
+
+	"testing"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/seibert-media/adeia/model"
+	"github.com/seibert-media/adeia/domain"
+	"github.com/seibert-media/adeia/mocks"
 )
 
-func TestSyncer(t *testing.T) {
+func TestDomain(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Domain Suite")
 }
 
 var _ = Describe("Fetcher", func() {
 	var (
-		domainFetcher *Fetcher
+		domainFetcher *domain.Fetcher
 		httpClient    *mocks.DomainClient
 	)
 
@@ -35,7 +34,7 @@ var _ = Describe("Fetcher", func() {
 		httpClient.GetReturns(&http.Response{
 			Body: ioutil.NopCloser(bytes.NewBufferString(`["www.example.com"]`)),
 		}, nil)
-		domainFetcher = &Fetcher{
+		domainFetcher = &domain.Fetcher{
 			Client: httpClient,
 			URL:    "http://server.com/domains",
 		}
@@ -94,7 +93,7 @@ var _ = Describe("Fetcher", func() {
 			It("returns a list with example.com", func() {
 				list, _ := domainFetcher.Fetch()
 				Expect(list).To(HaveLen(1))
-				Expect(list[0]).To(Equal(model.Domain("example.com")))
+				Expect(list[0]).To(Equal(domain.Domain("example.com")))
 			})
 		})
 		Describe("when json list contains two domains", func() {
@@ -108,8 +107,8 @@ var _ = Describe("Fetcher", func() {
 			It("returns a list with example.com", func() {
 				list, _ := domainFetcher.Fetch()
 				Expect(list).To(HaveLen(2))
-				Expect(list[0]).To(Equal(model.Domain("a.example.com")))
-				Expect(list[1]).To(Equal(model.Domain("b.example.com")))
+				Expect(list[0]).To(Equal(domain.Domain("a.example.com")))
+				Expect(list[1]).To(Equal(domain.Domain("b.example.com")))
 			})
 		})
 		Describe("when json is not parseable", func() {

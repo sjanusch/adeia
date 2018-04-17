@@ -9,7 +9,6 @@ import (
 	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/seibert-media/adeia/model"
 )
 
 //go:generate counterfeiter -o ../mocks/domain_client.go --fake-name DomainClient . client
@@ -17,14 +16,14 @@ type client interface {
 	Get(string) (*http.Response, error)
 }
 
-// Fetcher get all domains.
+// Fetcher gets all domains from URL using Client.
 type Fetcher struct {
 	Client client
 	URL    string
 }
 
 // Fetch domains from remote json endpoint.
-func (f *Fetcher) Fetch() ([]model.Domain, error) {
+func (f *Fetcher) Fetch() ([]Domain, error) {
 	if len(f.URL) < 1 {
 		return nil, errors.New("invalid URL")
 	}
@@ -35,7 +34,7 @@ func (f *Fetcher) Fetch() ([]model.Domain, error) {
 	if resp == nil {
 		return nil, errors.New("received empty response")
 	}
-	result := []model.Domain{}
+	result := []Domain{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, errors.Wrap(err, "parse json failed")
 	}
