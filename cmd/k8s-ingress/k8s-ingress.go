@@ -26,7 +26,7 @@ var (
 	//sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
 	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 	name        = flag.String("name", "", "name for ingress")
-	serverPort = flag.String("server-port", "8080", "port for ingress http-rule")
+	serverPort = flag.String("server-port", "", "port for ingress http-rule")
 )
 
 func main() {
@@ -57,6 +57,9 @@ func do() error {
 	}
 	if len(*name) == 0 {
 		return errors.New("parameter name missing")
+	}
+	if len(*serverPort) == 0 {
+		return errors.New("bla")
 	}
 	ingressSyncer := &ingress.Syncer{
 		Applier: &mocks.DomainApplier{},

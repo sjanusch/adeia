@@ -94,6 +94,14 @@ var _ = Describe("the k8s-ingress", func() {
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		Expect(serverSession.Err).To(gbytes.Say("parameter name missing"))
 	})
+	It("return error when server-port arg is missing", func() {
+		var err error
+		delete(validargs, "server-port")
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+	})
 })
 
 func TestSystem(t *testing.T) {
