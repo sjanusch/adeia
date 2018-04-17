@@ -2,10 +2,25 @@
 
 
 [[projects]]
+  name = "github.com/gogo/protobuf"
+  packages = [
+    "proto",
+    "sortkeys"
+  ]
+  revision = "1adfc126b41513cc696b209667c8656ea7aac67c"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/golang/glog"
   packages = ["."]
   revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/google/gofuzz"
+  packages = ["."]
+  revision = "24818f796faf91cd76ec7bddd72458fbced7a6c1"
 
 [[projects]]
   branch = "master"
@@ -43,6 +58,8 @@
   packages = [
     ".",
     "format",
+    "gbytes",
+    "gexec",
     "internal/assertion",
     "internal/asyncassertion",
     "internal/oraclematcher",
@@ -64,12 +81,22 @@
   version = "v0.8.0"
 
 [[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
+  version = "v1.0.1"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = [
     "html",
     "html/atom",
-    "html/charset"
+    "html/charset",
+    "http2",
+    "http2/hpack",
+    "idna",
+    "lex/httplex"
   ]
   revision = "500e7a4f953ddaf55d316b4d3adc516aa0379622"
 
@@ -82,6 +109,8 @@
 [[projects]]
   name = "golang.org/x/text"
   packages = [
+    "collate",
+    "collate/build",
     "encoding",
     "encoding/charmap",
     "encoding/htmlindex",
@@ -92,16 +121,29 @@
     "encoding/simplifiedchinese",
     "encoding/traditionalchinese",
     "encoding/unicode",
+    "internal/colltab",
     "internal/gen",
     "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
     "internal/utf8internal",
     "language",
     "runes",
+    "secure/bidirule",
     "transform",
-    "unicode/cldr"
+    "unicode/bidi",
+    "unicode/cldr",
+    "unicode/norm",
+    "unicode/rangetable"
   ]
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
+
+[[projects]]
+  name = "gopkg.in/inf.v0"
+  packages = ["."]
+  revision = "d2d2541c53f18d2a059457998ce2876cc8e67cbf"
+  version = "v0.9.1"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
@@ -109,9 +151,47 @@
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
+[[projects]]
+  branch = "master"
+  name = "k8s.io/api"
+  packages = [
+    "apps/v1beta1",
+    "core/v1",
+    "extensions/v1beta1"
+  ]
+  revision = "6fb8575d8ac324ad9f9605dec64b7a4b8a632e79"
+
+[[projects]]
+  branch = "master"
+  name = "k8s.io/apimachinery"
+  packages = [
+    "pkg/api/resource",
+    "pkg/apis/meta/v1",
+    "pkg/conversion",
+    "pkg/conversion/queryparams",
+    "pkg/fields",
+    "pkg/labels",
+    "pkg/runtime",
+    "pkg/runtime/schema",
+    "pkg/selection",
+    "pkg/types",
+    "pkg/util/errors",
+    "pkg/util/intstr",
+    "pkg/util/json",
+    "pkg/util/net",
+    "pkg/util/runtime",
+    "pkg/util/sets",
+    "pkg/util/validation",
+    "pkg/util/validation/field",
+    "pkg/util/wait",
+    "pkg/watch",
+    "third_party/forked/golang/reflect"
+  ]
+  revision = "ba81bc69c72dde92d5f1fefa2fa6d82aa83a6676"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7e26935435b78a301ae5d73ddc2d7d289a30d68c21f8971e064b33a41b9f2e59"
+  inputs-digest = "37606aa6a34ce5ce0ee3c763573328ffbf9ca976b335f43661869eb65196c038"
   solver-name = "gps-cdcl"
   solver-version = 1
