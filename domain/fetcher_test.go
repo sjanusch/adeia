@@ -112,6 +112,19 @@ var _ = Describe("Fetcher", func() {
 				Expect(list[1]).To(Equal(model.Domain("b.example.com")))
 			})
 		})
+		Describe("when json is not parseable", func() {
 
+			BeforeEach(func() {
+				response := &http.Response{}
+				response.Body = ioutil.NopCloser(bytes.NewBufferString(`foo bar`))
+				httpClient.GetReturns(response, nil)
+			})
+
+			It("returns an error", func() {
+				list, err := domainFetcher.Fetch()
+				Expect(err).NotTo(BeNil())
+				Expect(list).To(HaveLen(0))
+			})
+		})
 	})
 })

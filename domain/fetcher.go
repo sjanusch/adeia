@@ -5,9 +5,8 @@
 package domain
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"net/http"
-
 	"github.com/seibert-media/k8s-ingress/model"
 	"encoding/json"
 )
@@ -36,6 +35,8 @@ func (f *Fetcher) Fetch() ([]model.Domain, error) {
 		return nil, errors.New("received empty response")
 	}
 	result := []model.Domain{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, errors.Wrap(err, "parse json failed")
+	}
 	return result, nil
 }
