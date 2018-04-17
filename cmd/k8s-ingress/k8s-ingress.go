@@ -24,6 +24,7 @@ var (
 	//stagingPtr  = flag.Bool("staging", false, "staging status")
 	//dbg         = flag.Bool("debug", false, "enable debug mode")
 	//sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
+	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 )
 
 func main() {
@@ -48,6 +49,9 @@ func main() {
 func do() error {
 	if len(*urlPtr) == 0 {
 		return errors.New("parameter url missing")
+	}
+	if len(*serviceName) == 0 {
+		return errors.New("parameter service-name missing")
 	}
 	ingressSyncer := &ingress.Syncer{
 		Applier: &mocks.DomainApplier{},
