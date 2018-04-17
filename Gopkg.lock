@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/bborbe/flagenv"
+  packages = ["."]
+  revision = "4bf10dbe62f41ce40353a70225a84decfd16d3ac"
+
+[[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
     "proto",
@@ -200,6 +206,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c0aa310489e41d7e04ea49b1295dc17feec4b2895082755e0b15390f05eaf3a9"
+  inputs-digest = "1228d649cdb4819fa8a9196a65909931d7062aa7b1efb7a33e0907a06eb32fea"
   solver-name = "gps-cdcl"
   solver-version = 1

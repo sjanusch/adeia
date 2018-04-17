@@ -148,6 +148,37 @@ unknown - version unknown
 			Expect(len(server.ReceivedRequests())).To(Equal(1))
 		})
 	})
+
+	Describe("when given parameters via environment", func() {
+		Describe("when no arguments are given via command line", func() {
+			BeforeEach(func() {
+				validargs = nil
+			})
+			It("uses version environment variable", func() {
+				cmd := exec.Command(pathToServerBinary, validargs.list()...)
+				cmd.Env = []string{"VERSION=true"}
+				serverSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+				Expect(err).To(BeNil())
+				serverSession.Wait(time.Second)
+				Expect(serverSession.ExitCode()).To(Equal(0))
+			})
+		})
+		Describe("when version is set via command line", func() {
+			BeforeEach(func() {
+				validargs = map[string]string{
+					"version": "true",
+				}
+			})
+			It("uses command line argument value prioritized over environment", func() {
+				cmd := exec.Command(pathToServerBinary, validargs.list()...)
+				cmd.Env = []string{"VERSION=false"}
+				serverSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+				Expect(err).To(BeNil())
+				serverSession.Wait(time.Second)
+				Expect(serverSession.ExitCode()).To(Equal(0))
+			})
+		})
+	})
 })
 
 func TestSystem(t *testing.T) {

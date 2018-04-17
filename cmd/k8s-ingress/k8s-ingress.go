@@ -6,10 +6,11 @@ package main
 
 import (
 	"errors"
-	"flag"
 	"fmt"
 	"os"
 	"runtime"
+
+	flag "github.com/bborbe/flagenv"
 
 	"net/http"
 
