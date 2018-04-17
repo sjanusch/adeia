@@ -52,10 +52,11 @@ var validargs args
 
 var _ = BeforeEach(func() {
 	validargs = map[string]string{
-		"logtostderr": "",
-		"v":           "0",
-		"url":         "http://localhost:8080",
+		"logtostderr":  "",
+		"v":            "0",
+		"url":          "http://localhost:8080",
 		"service-name": "test-service",
+		"name":         "test-name",
 	}
 })
 
@@ -82,6 +83,15 @@ var _ = Describe("the k8s-ingress", func() {
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		Expect(serverSession.Err).To(gbytes.Say("parameter service-name missing"))
+	})
+	It("return error when name arg is missing", func() {
+		var err error
+		delete(validargs, "name")
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).NotTo(Equal(0))
+		Expect(serverSession.Err).To(gbytes.Say("parameter name missing"))
 	})
 })
 
