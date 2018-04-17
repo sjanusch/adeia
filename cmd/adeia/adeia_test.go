@@ -64,16 +64,16 @@ var _ = BeforeEach(func() {
 		"logtostderr":  "",
 		"v":            "0",
 		"url":          server.URL(),
-		"service-name": "test-service",
 		"name":         "test-name",
-		"server-port":  "8080",
 		"namespace":    "test-namespace",
+		"service-name": "test-service",
+		"server-port":  "8080",
+		"dry-run":      "true",
 	}
 })
 
 var _ = Describe("the adeia", func() {
 	var err error
-
 	Describe("when asked for version", func() {
 		It("prints version string", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-version"), GinkgoWriter, GinkgoWriter)
@@ -136,9 +136,7 @@ unknown - version unknown
 			Expect(serverSession.Err).To(gbytes.Say("parameter namespace missing"))
 		})
 	})
-
 	Describe("when called with valid input", func() {
-
 		It("call given url", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
@@ -147,14 +145,40 @@ unknown - version unknown
 			Expect(len(server.ReceivedRequests())).To(Equal(1))
 		})
 	})
-
-	It("writes ingress object to stdout", func() {
-		var err error
-		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
-		Expect(err).To(BeNil())
-		serverSession.Wait(time.Second)
-		Expect(serverSession.ExitCode()).To(Equal(0))
-		Expect(serverSession.Out).To(gbytes.Say(`test`))
+	Describe("called with dry run", func() {
+		It("writes ingress object to stdout", func() {
+			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+			Expect(err).To(BeNil())
+			serverSession.Wait(time.Second)
+			Expect(serverSession.ExitCode()).To(Equal(0))
+			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jenkins
+  name: jenkins
+  namespace: jenkins
+spec:
+  rules:
+  - host: a.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: test-service
+          servicePort: 8080
+        path: /
+  - host: b.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: test-service
+          servicePort: 8080
+        path: /
+status:
+  loadBalancer: {}
+`))
+		})
 	})
 })
 

@@ -25,6 +25,7 @@ var (
 	serviceNamePtr = flag.String("service-name", "", "service name for ingress http-rule")
 	serverPortPtr  = flag.String("server-port", "", "port for ingress http-rule")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
+	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
 )
 
 func main() {
@@ -62,12 +63,15 @@ func do() error {
 		return errors.New("parameter namespace missing")
 	}
 	ingressSyncer := &adeia.Syncer{
-		Applier: &ingress.PrintApplier{},
+		Applier: &ingress.K8sApplier{},
 		Creator: &ingress.Creator{},
 		Fetcher: &domain.Fetcher{
 			URL:    *urlPtr,
 			Client: http.DefaultClient,
 		},
+	}
+	if *dryRunPtr {
+		ingressSyncer.Applier = &ingress.PrintApplier{}
 	}
 	return ingressSyncer.Sync()
 }
