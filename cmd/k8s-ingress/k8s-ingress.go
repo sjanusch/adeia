@@ -65,7 +65,7 @@ func do() error {
 		return errors.New("parameter namespace missing")
 	}
 	ingressSyncer := &ingress.Syncer{
-		Applier:&applier.Applier{
+		Applier: &applier.Applier{
 			Converter: &converter.Converter{},
 		},
 		Fetcher: &domain.Fetcher{

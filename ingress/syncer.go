@@ -20,8 +20,8 @@ type applier interface {
 
 // Syncer creates ingress for a list of domains
 type Syncer struct {
-	Fetcher   fetcher
-	Applier   applier
+	Fetcher fetcher
+	Applier applier
 }
 
 // Sync fetches a list of domains an create ingresses

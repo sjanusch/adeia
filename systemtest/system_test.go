@@ -149,7 +149,6 @@ unknown - version unknown
 		})
 	})
 
-
 	It("writes ingress object to stdout", func() {
 		var err error
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
