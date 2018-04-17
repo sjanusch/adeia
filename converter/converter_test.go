@@ -6,7 +6,6 @@ package converter
 
 import (
 	"testing"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/k8s-ingress/model"
@@ -30,17 +29,13 @@ var _ = Describe("Fetcher", func() {
 	})
 
 	Describe("Convert", func() {
-		It("returns no error", func() {
-			_, err := domainConverter.Convert()
-			Expect(err).To(BeNil())
-		})
 		It("returns correct count of ingress objects", func() {
-			ingress, _ := domainConverter.Convert()
+			ingress := domainConverter.Convert()
 			Expect(ingress).ToNot(BeNil())
 			Expect(ingress.Spec.Rules).To(HaveLen(2))
 		})
 		It("returns ingress objects with correct host", func() {
-			ingress, _ := domainConverter.Convert()
+			ingress := domainConverter.Convert()
 			Expect(ingress.Spec.Rules[0].Host).To(Equal("http://server1.com/"))
 			Expect(ingress.Spec.Rules[1].Host).To(Equal("http://server2.com/"))
 		})
