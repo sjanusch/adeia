@@ -32,5 +32,5 @@ func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
 	if err != nil {
 		return err
 	}
-	panic("implement me")
+	return nil
 }
