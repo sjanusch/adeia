@@ -10,10 +10,12 @@ type converter interface {
 	Convert([]model.Domain) *v1beta1.Ingress
 }
 
+// Applier add ingress to k8sapplier/applier.go:18.
 type Applier struct {
 	Converter converter
 }
 
+// Apply a list of domains
 func (a *Applier) Apply(domains []model.Domain) error {
 	return nil
 }
