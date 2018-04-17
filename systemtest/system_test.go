@@ -57,6 +57,7 @@ var _ = BeforeEach(func() {
 		"url":          "http://localhost:8080",
 		"service-name": "test-service",
 		"name":         "test-name",
+		"server-port": 	"8080",
 	}
 })
 
