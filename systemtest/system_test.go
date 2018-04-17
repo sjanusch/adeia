@@ -5,7 +5,6 @@
 package system_test
 
 import (
-	"io/ioutil"
 	"net/http"
 	"os/exec"
 	"testing"
@@ -25,40 +24,43 @@ var _ = BeforeSuite(func() {
 	var err error
 	pathToServerBinary, err = gexec.Build("github.com/seibert-media/k8s-ingress/cmd/k8s-ingress")
 	Expect(err).NotTo(HaveOccurred())
-	server = ghttp.NewServer()
-	server.RouteToHandler(http.MethodGet, "/", ghttp.RespondWithJSONEncoded(http.StatusOK, []string{"a.example.com", "b.example.com"}))
 })
 
-var _ = AfterSuite(func() {
-	gexec.CleanupBuildArtifacts()
-	server.Close()
+var _ = BeforeEach(func() {
+	server = ghttp.NewServer()
+	server.RouteToHandler(http.MethodGet, "/", ghttp.RespondWithJSONEncoded(http.StatusOK, []string{"a.example.com", "b.example.com"}))
 })
 
 var _ = AfterEach(func() {
 	serverSession.Interrupt()
 	Eventually(serverSession).Should(gexec.Exit())
+	server.Close()
+})
+
+var _ = AfterSuite(func() {
+	gexec.CleanupBuildArtifacts()
 })
 
 var _ = Describe("the k8s-ingress", func() {
+	var err error
 	It("return with exitcode != 0 without needed parameter", func() {
-		var err error
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).NotTo(Equal(0))
 	})
 	It("return with exitcode 0 if called with valid args", func() {
-		var err error
 		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url="+server.URL()), GinkgoWriter, GinkgoWriter)
 		Expect(err).To(BeNil())
 		serverSession.Wait(time.Second)
 		Expect(serverSession.ExitCode()).To(Equal(0))
 	})
 	It("call given url", func() {
-		resp, _ := http.Get(server.URL())
-		content, _ := ioutil.ReadAll(resp.Body)
-		resp.Body.Close()
-		Expect(string(content)).To(Equal(`["a.example.com","b.example.com"]`))
+		serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-logtostderr", "-v=0", "-url="+server.URL()), GinkgoWriter, GinkgoWriter)
+		Expect(err).To(BeNil())
+		serverSession.Wait(time.Second)
+		Expect(serverSession.ExitCode()).To(Equal(0))
+		Expect(len(server.ReceivedRequests())).To(Equal(1))
 	})
 })
 
