@@ -26,7 +26,8 @@ var (
 	//sentryDsn   = flag.String("sentryDsn", "", "sentry dsn key")
 	serviceName = flag.String("service-name", "", "service name for ingress http-rule")
 	name        = flag.String("name", "", "name for ingress")
-	serverPort = flag.String("server-port", "", "port for ingress http-rule")
+	serverPort  = flag.String("server-port", "", "port for ingress http-rule")
+	namespace   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 )
 
 func main() {

@@ -58,6 +58,7 @@ var _ = BeforeEach(func() {
 		"service-name": "test-service",
 		"name":         "test-name",
 		"server-port": 	"8080",
+		"namespace": 	"test-namespace",
 	}
 })
 
