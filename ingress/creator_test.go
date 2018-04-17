@@ -32,5 +32,11 @@ var _ = Describe("Fetcher", func() {
 			Expect(ingress.Spec.Rules[0].Host).To(Equal("http://server1.com/"))
 			Expect(ingress.Spec.Rules[1].Host).To(Equal("http://server2.com/"))
 		})
+		It("returns ingress object with correct annotations", func() {
+			ingress := domainConverter.Create(Domains)
+			annotation, ok := ingress.Annotations["kubernetes.io/ingress.class"]
+			Expect(ok).NotTo(BeFalse())
+			Expect(annotation).To(BeEquivalentTo("traefik"))
+		})
 	})
 })
