@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package manager
+package pkg
 
 import (
 	"github.com/pkg/errors"
-	"github.com/seibert-media/k8s-ingress/domain"
+	"github.com/seibert-media/k8s-ingress/pkg/domain"
 	"k8s.io/api/extensions/v1beta1"
 )
 

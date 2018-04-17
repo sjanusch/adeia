@@ -4,7 +4,7 @@ package mocks
 import (
 	"sync"
 
-	"github.com/seibert-media/k8s-ingress/domain"
+	"github.com/seibert-media/k8s-ingress/pkg/domain"
 	"k8s.io/api/extensions/v1beta1"
 )
 

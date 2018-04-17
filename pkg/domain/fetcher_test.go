@@ -10,11 +10,18 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"testing"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/seibert-media/k8s-ingress/domain"
-	"github.com/seibert-media/k8s-ingress/mocks"
+	"github.com/seibert-media/k8s-ingress/pkg/domain"
+	"github.com/seibert-media/k8s-ingress/pkg/mocks"
 )
+
+func TestDomain(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Domain Suite")
+}
 
 var _ = Describe("Fetcher", func() {
 	var (

@@ -5,12 +5,11 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os/exec"
 	"testing"
 	"time"
-
-	"fmt"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package manager_test
+package pkg_test
 
 import (
 	"testing"
@@ -10,9 +10,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/pkg/errors"
-	"github.com/seibert-media/k8s-ingress/domain"
-	"github.com/seibert-media/k8s-ingress/mocks"
-	"github.com/seibert-media/k8s-ingress/manager"
+	"github.com/seibert-media/k8s-ingress/pkg"
+	"github.com/seibert-media/k8s-ingress/pkg/domain"
+	"github.com/seibert-media/k8s-ingress/pkg/mocks"
 )
 
 func TestSyncer(t *testing.T) {
@@ -25,14 +25,14 @@ var _ = Describe("Syncer", func() {
 		fetcher   *mocks.IngressFetcher
 		applier   *mocks.IngressApplier
 		converter *mocks.IngressConverter
-		syncer    *manager.Syncer
+		syncer    *pkg.Syncer
 	)
 
 	BeforeEach(func() {
 		fetcher = &mocks.IngressFetcher{}
 		applier = &mocks.IngressApplier{}
 		converter = &mocks.IngressConverter{}
-		syncer = &manager.Syncer{
+		syncer = &pkg.Syncer{
 			Applier:   applier,
 			Fetcher:   fetcher,
 			Converter: converter,

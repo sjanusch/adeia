@@ -15,10 +15,10 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
-	"github.com/seibert-media/k8s-ingress/domain"
-	"github.com/seibert-media/k8s-ingress/ingress"
-	"github.com/seibert-media/k8s-ingress/mocks"
-	"github.com/seibert-media/k8s-ingress/manager"
+	"github.com/seibert-media/k8s-ingress/pkg"
+	"github.com/seibert-media/k8s-ingress/pkg/domain"
+	"github.com/seibert-media/k8s-ingress/pkg/ingress"
+	"github.com/seibert-media/k8s-ingress/pkg/mocks"
 )
 
 var (
@@ -64,7 +64,7 @@ func do() error {
 	if len(*namespace) == 0 {
 		return errors.New("parameter namespace missing")
 	}
-	ingressSyncer := &manager.Syncer{
+	ingressSyncer := &pkg.Syncer{
 		Applier:   &ingress.Applier{},
 		Converter: &mocks.IngressConverter{},
 		Fetcher: &domain.Fetcher{
