@@ -18,6 +18,7 @@ import (
 	"github.com/seibert-media/k8s-ingress/domain"
 	"github.com/seibert-media/k8s-ingress/ingress"
 	"github.com/seibert-media/k8s-ingress/mocks"
+	"github.com/seibert-media/k8s-ingress/manager"
 )
 
 var (
@@ -63,7 +64,7 @@ func do() error {
 	if len(*namespace) == 0 {
 		return errors.New("parameter namespace missing")
 	}
-	ingressSyncer := &ingress.Syncer{
+	ingressSyncer := &manager.Syncer{
 		Applier:   &ingress.Applier{},
 		Converter: &mocks.IngressConverter{},
 		Fetcher: &domain.Fetcher{
