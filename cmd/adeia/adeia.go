@@ -71,7 +71,9 @@ func do() error {
 		},
 	}
 	if *dryRunPtr {
-		ingressSyncer.Applier = &ingress.PrintApplier{}
+		ingressSyncer.Applier = &ingress.PrintApplier{
+			Out: os.Stdout,
+		}
 	}
 	return ingressSyncer.Sync()
 }
