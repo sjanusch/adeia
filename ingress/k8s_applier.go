@@ -5,14 +5,32 @@
 package ingress
 
 import (
-	"k8s.io/api/extensions/v1beta1"
+	"errors"
+
+	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
 )
 
-// K8sApplier add ingress to k8sapplier/applier.go:18.
-type K8sApplier struct {
+//go:generate counterfeiter -o ../mocks/ingress_client.go --fake-name IngressClient . ingressClient
+type ingressClient interface {
+	Create(*k8s_v1beta1.Ingress) (*k8s_v1beta1.Ingress, error)
 }
 
-// Apply a list of domains
-func (a *K8sApplier) Apply(ingress *v1beta1.Ingress) error {
+// K8sApplier add ingress to Client.
+type K8sApplier struct {
+	Client ingressClient
+}
+
+// Apply a list of domains.
+func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
+	if ingress == nil {
+		return errors.New("ingress must not be nil")
+	}
+	if a.Client == nil {
+		return errors.New("client must not be nil")
+	}
+	_, err := a.Client.Create(ingress)
+	if err != nil {
+		return err
+	}
 	panic("implement me")
 }

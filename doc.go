@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-K8s manages Ingresses based on a list.
+Adeia is an application to deploy ingresses to a kubernetes cluster depending on a list of domains provided by an http get call.
 */
 
 package adeia
