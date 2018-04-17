@@ -21,8 +21,26 @@ var (
 )
 
 func (c *Converter) Convert() (v1beta1.Ingress, error) {
+
+
+	var ingress = v1beta1.Ingress{
+		ObjectMeta: metav1.ObjectMeta{
+			Annotations: map[string]string{
+				"kubernetes.io/ingress.class": "traefik",
+			},
+			Name:      namePtr,
+			Namespace: namespacePtr,
+		},
+		Spec: v1beta1.IngressSpec{
+			Rules: buildRuleSet(c.Domains),
+		},
+	}
+	return ingress, nil
+}
+
+func buildRuleSet(domains []model.Domain) ([]v1beta1.IngressRule) {
 	var ingressRules []v1beta1.IngressRule
-	for _, domain := range c.Domains {
+	for _, domain := range domains {
 
 		ingressRule := v1beta1.IngressRule{
 			Host: string(domain),
@@ -42,18 +60,5 @@ func (c *Converter) Convert() (v1beta1.Ingress, error) {
 		}
 		ingressRules = append(ingressRules, ingressRule)
 	}
-
-	var ingress = v1beta1.Ingress{
-		ObjectMeta: metav1.ObjectMeta{
-			Annotations: map[string]string{
-				"kubernetes.io/ingress.class": "traefik",
-			},
-			Name:      namePtr,
-			Namespace: namespacePtr,
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: ingressRules,
-		},
-	}
-	return ingress, nil
+	return ingressRules
 }
