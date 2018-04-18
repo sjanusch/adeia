@@ -5,32 +5,34 @@
 package ingress
 
 import (
-	"errors"
-
+	"github.com/pkg/errors"
 	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
+	k8s_kubernetes "k8s.io/client-go/kubernetes"
+	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
+	k8s_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-//go:generate counterfeiter -o ../mocks/ingress_client.go --fake-name IngressClient . ingressClient
-type ingressClient interface {
-	Create(*k8s_v1beta1.Ingress) (*k8s_v1beta1.Ingress, error)
-}
 
 // K8sApplier add ingress to Client.
 type K8sApplier struct {
-	Client ingressClient
+	Kubeconfig string
+	Namespace  string
 }
 
 // Apply a list of domains.
 func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
-	if ingress == nil {
-		return errors.New("ingress must not be nil")
-	}
-	if a.Client == nil {
-		return errors.New("client must not be nil")
-	}
-	_, err := a.Client.Create(ingress)
+	config, err := k8s_clientcmd.BuildConfigFromFlags("", a.Kubeconfig)
 	if err != nil {
+		return errors.Wrap(err, "build k8s config from flags failed")
+	}
+	clientset, err := k8s_kubernetes.NewForConfig(config)
+	if err != nil {
+		return errors.Wrap(err, "create k8s config failed")
+	}
+	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Get(ingress.Name, k8s_v1.GetOptions{})
+	if err != nil {
+		_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Create(ingress)
 		return err
 	}
-	panic("implement me")
+	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Update(ingress)
+	return err
 }

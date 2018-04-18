@@ -69,6 +69,7 @@ var _ = BeforeEach(func() {
 		"service-name": "test-service",
 		"service-port": "8080",
 		"dry-run":      "true",
+		"kubeconfig":   "~/.kube/config",
 	}
 })
 
