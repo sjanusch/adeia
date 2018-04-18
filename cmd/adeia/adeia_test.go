@@ -178,6 +178,43 @@ spec:
 status:
   loadBalancer: {}`))
 		})
+
+		It("call with dry run and different ingress specs", func() {
+			validargs["ingress-name"] = "superingress"
+			validargs["service-port"] = "superport"
+			validargs["service-name"] = "superservicename"
+			validargs["namespace"] = "superspace"
+			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+			Expect(err).To(BeNil())
+			serverSession.Wait(time.Second)
+			Expect(serverSession.ExitCode()).To(Equal(0))
+			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  name: superingress
+  namespace: superspace
+spec:
+  rules:
+  - host: a.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: superservicename
+          servicePort: superport
+        path: /
+  - host: b.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: test-service
+          servicePort: 8080
+        path: /
+status:
+  loadBalancer: {}`))
+		})
 	})
 
 	Describe("when given parameters via environment", func() {
