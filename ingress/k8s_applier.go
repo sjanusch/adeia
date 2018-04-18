@@ -9,6 +9,7 @@ import (
 	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
 	k8s_kubernetes "k8s.io/client-go/kubernetes"
 	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
+	k8s_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // K8sApplier add ingress to Client.
@@ -27,6 +28,11 @@ func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
 	if err != nil {
 		return errors.Wrap(err, "create k8s config failed")
 	}
-	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Create(ingress)
+	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Get(ingress.Name, k8s_v1.GetOptions{})
+	if err != nil {
+		_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Create(ingress)
+		return err
+	}
+	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Update(ingress)
 	return err
 }
