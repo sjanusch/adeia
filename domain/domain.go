@@ -6,3 +6,7 @@ package domain
 
 // Domain name
 type Domain string
+
+func (d Domain) String() string {
+	return string(d)
+}
