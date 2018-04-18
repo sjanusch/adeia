@@ -26,6 +26,7 @@ var (
 	servicePortPtr = flag.String("service-port", "", "port for ingress http-rule")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
+	kubeconfigPtr  = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 )
 
 func main() {
@@ -62,6 +63,20 @@ func do() error {
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
 	}
+	if len(*kubeconfigPtr) == 0 {
+		return errors.New("parameter kubeconfig missing")
+	}
+
+	//config, err := clientcmd.BuildConfigFromFlags("", *kubeconfigPtr)
+	//if err != nil {
+	//	glog.Exitf("build config from flags failed: %v", err)
+	//}
+	//clientset, err := kubernetes.NewForConfig(config)
+	//if err != nil {
+	//	glog.Exitf("new config failed: %v", err)
+	//}
+	//ingressClient := clientset.ExtensionsV1beta1().Ingresses(*namespacePtr)
+
 	ingressSyncer := &adeia.Syncer{
 		Applier: &ingress.K8sApplier{},
 		Creator: &ingress.Creator{},

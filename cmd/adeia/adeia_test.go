@@ -69,6 +69,7 @@ var _ = BeforeEach(func() {
 		"service-name": "test-service",
 		"service-port": "8080",
 		"dry-run":      "true",
+		"kubeconfig":   "~/.kube/config",
 	}
 })
 
@@ -134,6 +135,14 @@ unknown - version unknown
 			serverSession.Wait(time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter namespace missing"))
+		})
+		It("return error when kubeconfig arg is missing", func() {
+			delete(validargs, "kubeconfig")
+			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+			Expect(err).To(BeNil())
+			serverSession.Wait(time.Second)
+			Expect(serverSession.ExitCode()).NotTo(Equal(0))
+			Expect(serverSession.Err).To(gbytes.Say("parameter kubeconfig missing"))
 		})
 	})
 	Describe("when called with valid input", func() {
