@@ -158,7 +158,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
   creationTimestamp: null
   name: test-name
-  namespace: test-ns
+  namespace: test-namespace
 spec:
   rules:
   - host: a.example.com
@@ -209,8 +209,8 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: test-service
-          servicePort: 8080
+          serviceName: superservicename
+          servicePort: superport
         path: /
 status:
   loadBalancer: {}`))
