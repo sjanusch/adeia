@@ -6,16 +6,19 @@ package main
 
 import (
 	"errors"
-	flag "github.com/bborbe/flagenv"
 	"fmt"
 	"net/http"
 	"os"
 	"runtime"
+
+	flag "github.com/bborbe/flagenv"
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
 	"github.com/seibert-media/adeia"
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/ingress"
+	"path/filepath"
+	"k8s.io/client-go/util/homedir"
 )
 
 var (
@@ -26,12 +29,17 @@ var (
 	servicePortPtr = flag.String("service-port", "", "port for ingress http-rule")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
-	kubeconfigPtr  = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	kubeconfigPtr  *string
 )
 
 func main() {
 	defer glog.Flush()
 	glog.CopyStandardLogTo("info")
+	if home := homedir.HomeDir(); home != "" {
+		kubeconfigPtr = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		kubeconfigPtr = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	}
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
@@ -67,18 +75,11 @@ func do() error {
 		return errors.New("parameter kubeconfig missing")
 	}
 
-	//config, err := clientcmd.BuildConfigFromFlags("", *kubeconfigPtr)
-	//if err != nil {
-	//	glog.Exitf("build config from flags failed: %v", err)
-	//}
-	//clientset, err := kubernetes.NewForConfig(config)
-	//if err != nil {
-	//	glog.Exitf("new config failed: %v", err)
-	//}
-	//ingressClient := clientset.ExtensionsV1beta1().Ingresses(*namespacePtr)
-
 	ingressSyncer := &adeia.Syncer{
-		Applier: &ingress.K8sApplier{},
+		Applier: &ingress.K8sApplier{
+			Kubeconfig: *kubeconfigPtr,
+			Namespace:  *namespacePtr,
+		},
 		Creator: &ingress.Creator{},
 		Fetcher: &domain.Fetcher{
 			URL:    *urlPtr,
