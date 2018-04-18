@@ -128,7 +128,7 @@ unknown - version unknown
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter service-port missing"))
 		})
-		It("returns error when service-port arg is missing", func() {
+		It("returns error when namespace arg is missing", func() {
 			delete(validargs, "namespace")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
@@ -159,7 +159,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
   creationTimestamp: null
   name: test-name
-  namespace: test-ns
+  namespace: test-namespace
 spec:
   rules:
   - host: a.example.com
@@ -175,6 +175,43 @@ spec:
       - backend:
           serviceName: test-service
           servicePort: 8080
+        path: /
+status:
+  loadBalancer: {}`))
+		})
+
+		It("call with dry run and different ingress specs", func() {
+			validargs["ingress-name"] = "superingress"
+			validargs["service-port"] = "superport"
+			validargs["service-name"] = "superservicename"
+			validargs["namespace"] = "superspace"
+			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
+			Expect(err).To(BeNil())
+			serverSession.Wait(time.Second)
+			Expect(serverSession.ExitCode()).To(Equal(0))
+			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  name: superingress
+  namespace: superspace
+spec:
+  rules:
+  - host: a.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: superservicename
+          servicePort: superport
+        path: /
+  - host: b.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: superservicename
+          servicePort: superport
         path: /
 status:
   loadBalancer: {}`))

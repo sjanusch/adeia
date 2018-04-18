@@ -9,10 +9,10 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
-	"k8s.io/api/extensions/v1beta1"
+	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
 )
 
-var YamlMarshal = yaml.Marshal
+var yamlMarshal = yaml.Marshal
 
 // PrintApplier add ingress to k8sapplier/applier.go:18.
 type PrintApplier struct {
@@ -20,8 +20,8 @@ type PrintApplier struct {
 }
 
 // Apply a list of domains
-func (a *PrintApplier) Apply(ingress *v1beta1.Ingress) error {
-	content, err := YamlMarshal(ingress)
+func (a *PrintApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
+	content, err := yamlMarshal(ingress)
 	if err != nil {
 		return errors.Wrap(err, "marshal yaml failed")
 	}

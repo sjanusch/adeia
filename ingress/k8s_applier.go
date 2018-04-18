@@ -5,10 +5,10 @@
 package ingress
 
 import (
-	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 	"github.com/pkg/errors"
+	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
+	k8s_kubernetes "k8s.io/client-go/kubernetes"
+	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
 )
 
 // K8sApplier add ingress to Client.
@@ -19,11 +19,11 @@ type K8sApplier struct {
 
 // Apply a list of domains.
 func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
-	config, err := clientcmd.BuildConfigFromFlags("", a.Kubeconfig)
+	config, err := k8s_clientcmd.BuildConfigFromFlags("", a.Kubeconfig)
 	if err != nil {
 		return errors.Wrap(err, "build k8s config from flags failed")
 	}
-	clientset, err := kubernetes.NewForConfig(config)
+	clientset, err := k8s_kubernetes.NewForConfig(config)
 	if err != nil {
 		return errors.Wrap(err, "create k8s config failed")
 	}

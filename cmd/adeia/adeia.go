@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"runtime"
 
 	flag "github.com/bborbe/flagenv"
@@ -17,8 +18,7 @@ import (
 	"github.com/seibert-media/adeia"
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/ingress"
-	"path/filepath"
-	"k8s.io/client-go/util/homedir"
+	k8s_homedir "k8s.io/client-go/util/homedir"
 )
 
 var (
@@ -35,7 +35,7 @@ var (
 func main() {
 	defer glog.Flush()
 	glog.CopyStandardLogTo("info")
-	if home := homedir.HomeDir(); home != "" {
+	if home := k8s_homedir.HomeDir(); home != "" {
 		kubeconfigPtr = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
 	} else {
 		kubeconfigPtr = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
@@ -80,7 +80,12 @@ func do() error {
 			Kubeconfig: *kubeconfigPtr,
 			Namespace:  *namespacePtr,
 		},
-		Creator: &ingress.Creator{},
+		Creator: &ingress.Creator{
+			Ingressname: *ingressNamePtr,
+			Serviceport: *servicePortPtr,
+			Servicename: *serviceNamePtr,
+			Namespace:   *namespacePtr,
+		},
 		Fetcher: &domain.Fetcher{
 			URL:    *urlPtr,
 			Client: http.DefaultClient,
