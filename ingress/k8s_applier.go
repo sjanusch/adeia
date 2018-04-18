@@ -5,12 +5,12 @@
 package ingress
 
 import (
+	"github.com/golang/glog"
 	"github.com/pkg/errors"
 	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
+	k8s_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8s_kubernetes "k8s.io/client-go/kubernetes"
 	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
-	k8s_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/golang/glog"
 )
 
 // K8sApplier add ingress to Client.
