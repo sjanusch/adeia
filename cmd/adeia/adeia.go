@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"path/filepath"
 	"runtime"
 
 	flag "github.com/bborbe/flagenv"
@@ -18,7 +17,6 @@ import (
 	"github.com/seibert-media/adeia"
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/ingress"
-	k8s_homedir "k8s.io/client-go/util/homedir"
 )
 
 var (
@@ -29,17 +27,12 @@ var (
 	servicePortPtr = flag.String("service-port", "", "port for ingress http-rule")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
-	kubeconfigPtr  *string
+	kubeconfigPtr  = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 )
 
 func main() {
 	defer glog.Flush()
 	glog.CopyStandardLogTo("info")
-	if home := k8s_homedir.HomeDir(); home != "" {
-		kubeconfigPtr = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		kubeconfigPtr = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
@@ -78,7 +71,7 @@ func do() error {
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
 	}
-	glog.V(1).Infof("arg dry-run: %s", *dryRunPtr)
+	glog.V(1).Infof("arg dry-run: %b", *dryRunPtr)
 	glog.V(1).Infof("arg kubeconfig: %s", *kubeconfigPtr)
 	glog.V(1).Infof("arg url: %s", *urlPtr)
 	glog.V(1).Infof("arg namespace: %s", *namespacePtr)

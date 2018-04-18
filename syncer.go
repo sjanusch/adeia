@@ -5,10 +5,10 @@
 package adeia
 
 import (
+	"github.com/golang/glog"
 	"github.com/pkg/errors"
 	"github.com/seibert-media/adeia/domain"
 	"k8s.io/api/extensions/v1beta1"
-	"github.com/golang/glog"
 )
 
 //go:generate counterfeiter -o mocks/ingress_fetcher.go --fake-name IngressFetcher . fetcher
