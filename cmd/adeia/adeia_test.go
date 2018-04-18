@@ -67,7 +67,7 @@ var _ = BeforeEach(func() {
 		"name":         "test-name",
 		"namespace":    "test-namespace",
 		"service-name": "test-service",
-		"server-port":  "8080",
+		"service-port": "8080",
 		"dry-run":      "true",
 	}
 })
@@ -119,15 +119,15 @@ unknown - version unknown
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter name missing"))
 		})
-		It("returns error when server-port arg is missing", func() {
-			delete(validargs, "server-port")
+		It("returns error when service-port arg is missing", func() {
+			delete(validargs, "service-port")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
 			serverSession.Wait(time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
-			Expect(serverSession.Err).To(gbytes.Say("parameter server-port missing"))
+			Expect(serverSession.Err).To(gbytes.Say("parameter service-port missing"))
 		})
-		It("returns error when server-port arg is missing", func() {
+		It("returns error when service-port arg is missing", func() {
 			delete(validargs, "namespace")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
