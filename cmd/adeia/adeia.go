@@ -50,7 +50,14 @@ func main() {
 	}
 
 	if err := do(); err != nil {
-		glog.Error(err)
+		type stackTracer interface {
+			StackTrace() errors.StackTrace
+		}
+		cause, ok := err.(stackTracer)
+		if ok {
+			glog.V(1).Info(cause.StackTrace())
+		}
+		glog.Fatal(err)
 		os.Exit(1)
 	}
 }

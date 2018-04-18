@@ -53,7 +53,9 @@ func createClientSet(kubeconfig string) (k8s_kubernetes.Interface, error) {
 
 func createConfig(kubeconfig string) (*k8s_rest.Config, error) {
 	if len(kubeconfig) > 0 {
+		glog.V(4).Infof("create kube config from flags")
 		return k8s_clientcmd.BuildConfigFromFlags("", kubeconfig)
 	}
+	glog.V(4).Infof("create kube config with in cluster config")
 	return k8s_rest.InClusterConfig()
 }
