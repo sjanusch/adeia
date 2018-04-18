@@ -14,7 +14,7 @@ import (
 
 var yamlMarshal = yaml.Marshal
 
-// PrintApplier add ingress to k8sapplier/applier.go:18.
+// PrintApplier add Ingress to k8sapplier/applier.go:18.
 type PrintApplier struct {
 	Out io.Writer
 }

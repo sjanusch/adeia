@@ -19,7 +19,7 @@ type Creator struct {
 	Namespace   string
 }
 
-// Create ingress for the given domains.
+// Create Ingress for the given domains.
 func (c *Creator) Create(domains []domain.Domain) *k8s_v1beta1.Ingress {
 	return &k8s_v1beta1.Ingress{
 		TypeMeta: k8s_metav1.TypeMeta{
