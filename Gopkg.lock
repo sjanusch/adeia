@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/bborbe/flagenv"
+  packages = ["."]
+  revision = "4bf10dbe62f41ce40353a70225a84decfd16d3ac"
+
+[[projects]]
   name = "github.com/ghodss/yaml"
   packages = ["."]
   revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
@@ -317,6 +323,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "71462394aeef7c0fe7547f878660de8f9a26ac42b64d0273d0b93cfb4c2c84e6"
+  inputs-digest = "a0ea9ff4e81ac7db822fbaf737557075cda37f743248b2e2767cb2a0a2aa41bf"
   solver-name = "gps-cdcl"
   solver-version = 1

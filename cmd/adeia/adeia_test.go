@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package main_test
 
 import (
 	"fmt"
@@ -177,6 +177,37 @@ spec:
         path: /
 status:
   loadBalancer: {}`))
+		})
+	})
+
+	Describe("when given parameters via environment", func() {
+		Describe("when no arguments are given via command line", func() {
+			BeforeEach(func() {
+				validargs = nil
+			})
+			It("uses version environment variable", func() {
+				cmd := exec.Command(pathToServerBinary, validargs.list()...)
+				cmd.Env = []string{"VERSION=true"}
+				serverSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+				Expect(err).To(BeNil())
+				serverSession.Wait(time.Second)
+				Expect(serverSession.ExitCode()).To(Equal(0))
+			})
+		})
+		Describe("when version is set via command line", func() {
+			BeforeEach(func() {
+				validargs = map[string]string{
+					"version": "true",
+				}
+			})
+			It("uses command line argument value prioritized over environment", func() {
+				cmd := exec.Command(pathToServerBinary, validargs.list()...)
+				cmd.Env = []string{"VERSION=false"}
+				serverSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+				Expect(err).To(BeNil())
+				serverSession.Wait(time.Second)
+				Expect(serverSession.ExitCode()).To(Equal(0))
+			})
 		})
 	})
 })
