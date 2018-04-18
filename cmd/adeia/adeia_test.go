@@ -147,7 +147,7 @@ unknown - version unknown
 		})
 	})
 	Describe("called with dry run", func() {
-		It("writes ingress object to stdout", func() {
+		It("writes Ingress object to stdout", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
 			serverSession.Wait(time.Second)
@@ -180,7 +180,7 @@ status:
   loadBalancer: {}`))
 		})
 
-		It("call with dry run and different ingress specs", func() {
+		It("call with dry run and different Ingress specs", func() {
 			validargs["ingress-name"] = "superingress"
 			validargs["service-port"] = "superport"
 			validargs["service-name"] = "superservicename"

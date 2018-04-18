@@ -40,7 +40,7 @@ var _ = Describe("Syncer", func() {
 	})
 
 	Describe("Sync", func() {
-		It("calls ingress fetcher", func() {
+		It("calls Ingress fetcher", func() {
 			Expect(fetcher.FetchCallCount()).To(Equal(0))
 			Expect(syncer.Sync()).To(BeNil())
 			Expect(fetcher.FetchCallCount()).To(Equal(1))

@@ -25,7 +25,7 @@ type creator interface {
 	Create(domains []domain.Domain) *v1beta1.Ingress
 }
 
-// Syncer creates ingress for a list of domains
+// Syncer creates Ingress for a list of domains
 type Syncer struct {
 	Fetcher fetcher
 	Creator creator

@@ -25,8 +25,8 @@ var (
 	versionPtr     = flag.Bool("version", false, "show version info")
 	urlPtr         = flag.String("url", "", "url to api")
 	ingressNamePtr = flag.String("ingress-name", "", "name for ingress")
-	serviceNamePtr = flag.String("service-name", "", "service name for ingress http-rule")
-	servicePortPtr = flag.String("service-port", "", "port for ingress http-rule")
+	serviceNamePtr = flag.String("service-name", "", "service name for Ingress http-rule")
+	servicePortPtr = flag.String("service-port", "", "port for Ingress http-rule")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
 	kubeconfigPtr  *string

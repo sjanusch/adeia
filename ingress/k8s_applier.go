@@ -13,7 +13,7 @@ import (
 	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
 )
 
-// K8sApplier add ingress to Client.
+// K8sApplier add Ingress to Client.
 type K8sApplier struct {
 	Kubeconfig string
 	Namespace  string
@@ -33,14 +33,14 @@ func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
 	if err != nil {
 		_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Create(ingress)
 		if err != nil {
-			return errors.Wrap(err, "create ingress failed")
+			return errors.Wrap(err, "create Ingress failed")
 		}
 		glog.V(0).Infof("ingress %s created successful", ingress.Name)
 		return nil
 	}
 	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Update(ingress)
 	if err != nil {
-		return errors.Wrap(err, "update ingress failed")
+		return errors.Wrap(err, "update Ingress failed")
 	}
 	glog.V(0).Infof("ingress %s updated successful", ingress.Name)
 	return nil

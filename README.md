@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/seibert-media/adeia.svg?branch=master)](https://travis-ci.org/seibert-media/adeia)
 [![Docker Repository on Quay](https://quay.io/repository/seibertmedia/adeia/status "Docker Repository on Quay")](https://quay.io/repository/seibertmedia/adeia)
 
-Adeia is an application to deploy ingress rules to a Kubernetes cluster depending on a list of domains provided by an http get call
+Adeia is an application to deploy Ingress rules to a Kubernetes cluster depending on a list of domains provided by an http get call
 
 ## Name
 
@@ -13,7 +13,7 @@ The word adeia originates from the Greek word άδεια which means 'to permit'
 
 ## Installing
 
-Simply run `make all`. There should now be a command `adeia` in your `$GOPATH`.  
+Simply run `go get github.com/seibert-media/adeia/cmd/adeia`. There should now be a command `adeia` in your `$GOPATH/bin`.  
 
 ## First Run
 
