@@ -78,6 +78,13 @@ func do() error {
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
 	}
+	glog.V(1).Infof("arg dry-run: %s", *dryRunPtr)
+	glog.V(1).Infof("arg kubeconfig: %s", *kubeconfigPtr)
+	glog.V(1).Infof("arg url: %s", *urlPtr)
+	glog.V(1).Infof("arg namespace: %s", *namespacePtr)
+	glog.V(1).Infof("arg ingress-name: %s", *ingressNamePtr)
+	glog.V(1).Infof("arg service-name: %s", *serviceNamePtr)
+	glog.V(1).Infof("arg service-port: %s", *servicePortPtr)
 
 	ingressSyncer := &adeia.Syncer{
 		Applier: &ingress.K8sApplier{
@@ -96,6 +103,7 @@ func do() error {
 		},
 	}
 	if *dryRunPtr {
+		glog.V(2).Infof("dry-run=true => use print applier")
 		ingressSyncer.Applier = &ingress.PrintApplier{
 			Out: os.Stdout,
 		}
