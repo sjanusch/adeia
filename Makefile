@@ -25,7 +25,6 @@ REVISION 	:= $(shell git rev-parse HEAD)
 REVSHORT 	:= $(shell git rev-parse --short HEAD)
 USER 		:= $(shell whoami)
 
-STAGING 	?= true
 V			?= 0
 NAMESPACES	?= debug
 
@@ -39,7 +38,7 @@ include helpers/make_version
 
 ### MAIN STEPS ###
 
-all: test install run
+all: test install
 
 # install required tools and dependencies
 deps:
@@ -65,13 +64,6 @@ test:
 # install passed in tool project
 install:
 	GOBIN=$(GOPATH)/bin go install cmd/$(NAME)/*.go
-
-# run tool
-run:
-	$(NAME) \
-	-staging=$(STAGING) \
-	-logtostderr \
-	-v=$(V)
 
 # format entire repo (excluding vendor)
 format:
