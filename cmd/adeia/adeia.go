@@ -6,12 +6,11 @@ package main
 
 import (
 	"errors"
-	"flag"
+	flag "github.com/bborbe/flagenv"
 	"fmt"
 	"net/http"
 	"os"
 	"runtime"
-
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
 	"github.com/seibert-media/adeia"
