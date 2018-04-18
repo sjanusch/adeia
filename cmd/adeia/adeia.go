@@ -5,13 +5,13 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
-
+	k8s_kubernetes "k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	flag "github.com/bborbe/flagenv"
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
@@ -19,6 +19,8 @@ import (
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/ingress"
 	k8s_homedir "k8s.io/client-go/util/homedir"
+	"github.com/pkg/errors"
+	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
 )
 
 var (
@@ -75,10 +77,19 @@ func do() error {
 		return errors.New("parameter kubeconfig missing")
 	}
 
+	config, err := createConfig()
+	if err != nil {
+		return errors.Wrap(err, "create k8s config failed")
+	}
+	clientset, err := k8s_kubernetes.NewForConfig(config)
+	if err != nil {
+		return errors.Wrap(err, "create k8s clientset failed")
+	}
+
 	ingressSyncer := &adeia.Syncer{
 		Applier: &ingress.K8sApplier{
-			Kubeconfig: *kubeconfigPtr,
-			Namespace:  *namespacePtr,
+			Clientset: clientset,
+			Namespace: *namespacePtr,
 		},
 		Creator: &ingress.Creator{
 			Ingressname: *ingressNamePtr,
@@ -97,4 +108,11 @@ func do() error {
 		}
 	}
 	return ingressSyncer.Sync()
+}
+
+func createConfig() (*rest.Config, error) {
+	if len(*kubeconfigPtr) == 0 {
+		return rest.InClusterConfig()
+	}
+	return k8s_clientcmd.BuildConfigFromFlags("", *kubeconfigPtr)
 }
