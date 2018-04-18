@@ -13,14 +13,11 @@ import (
 
 // Creator for transform domain to ingress
 type Creator struct {
+	Ingressname string
+	Servicename string
+	Serviceport string
+	Namespace string
 }
-
-var (
-	serviceName = "test-service"
-	serverPort  = "8080"
-	name        = "test-name"
-	namespace   = "test-ns"
-)
 
 // Create ingress for the given domains.
 func (c *Creator) Create(domains []domain.Domain) *v1beta1.Ingress {
@@ -33,16 +30,16 @@ func (c *Creator) Create(domains []domain.Domain) *v1beta1.Ingress {
 			Annotations: map[string]string{
 				"kubernetes.io/ingress.class": "traefik",
 			},
-			Name:      name,
-			Namespace: namespace,
+			Name:      c.Ingressname,
+			Namespace: c.Namespace,
 		},
 		Spec: v1beta1.IngressSpec{
-			Rules: buildRuleSet(domains),
+			Rules: c.buildRuleSet(domains),
 		},
 	}
 }
 
-func buildRuleSet(domains []domain.Domain) []v1beta1.IngressRule {
+func (c *Creator) buildRuleSet(domains []domain.Domain) []v1beta1.IngressRule {
 	var ingressRules []v1beta1.IngressRule
 	for _, domain := range domains {
 		ingressRule := v1beta1.IngressRule{
@@ -53,8 +50,8 @@ func buildRuleSet(domains []domain.Domain) []v1beta1.IngressRule {
 						{
 							Path: "/",
 							Backend: v1beta1.IngressBackend{
-								ServiceName: serviceName,
-								ServicePort: intstr.Parse(serverPort),
+								ServiceName: c.Servicename,
+								ServicePort: intstr.Parse(c.Serviceport),
 							},
 						},
 					},

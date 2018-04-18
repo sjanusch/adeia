@@ -64,7 +64,12 @@ func do() error {
 	}
 	ingressSyncer := &adeia.Syncer{
 		Applier: &ingress.K8sApplier{},
-		Creator: &ingress.Creator{},
+		Creator: &ingress.Creator{
+			Ingressname: *ingressNamePtr,
+			Serviceport: *servicePortPtr,
+			Servicename: *serviceNamePtr,
+			Namespace: *namespacePtr,
+		},
 		Fetcher: &domain.Fetcher{
 			URL:    *urlPtr,
 			Client: http.DefaultClient,
