@@ -6,12 +6,11 @@ package main
 
 import (
 	"errors"
-	"flag"
+	flag "github.com/bborbe/flagenv"
 	"fmt"
 	"net/http"
 	"os"
 	"runtime"
-
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
 	"github.com/seibert-media/adeia"
@@ -22,9 +21,9 @@ import (
 var (
 	versionPtr     = flag.Bool("version", false, "show version info")
 	urlPtr         = flag.String("url", "", "url to api")
-	namePtr        = flag.String("name", "", "name for ingress")
+	ingressNamePtr = flag.String("ingress-name", "", "name for ingress")
 	serviceNamePtr = flag.String("service-name", "", "service name for ingress http-rule")
-	serverPortPtr  = flag.String("server-port", "", "port for ingress http-rule")
+	servicePortPtr = flag.String("service-port", "", "port for ingress http-rule")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
 )
@@ -54,11 +53,11 @@ func do() error {
 	if len(*serviceNamePtr) == 0 {
 		return errors.New("parameter service-name missing")
 	}
-	if len(*namePtr) == 0 {
+	if len(*ingressNamePtr) == 0 {
 		return errors.New("parameter name missing")
 	}
-	if len(*serverPortPtr) == 0 {
-		return errors.New("parameter server-port missing")
+	if len(*servicePortPtr) == 0 {
+		return errors.New("parameter service-port missing")
 	}
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
