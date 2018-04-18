@@ -64,7 +64,7 @@ var _ = BeforeEach(func() {
 		"logtostderr":  "",
 		"v":            "0",
 		"url":          server.URL(),
-		"name":         "test-name",
+		"ingress-name": "test-name",
 		"namespace":    "test-namespace",
 		"service-name": "test-service",
 		"service-port": "8080",
@@ -112,7 +112,7 @@ unknown - version unknown
 			Expect(serverSession.Err).To(gbytes.Say("parameter service-name missing"))
 		})
 		It("returns error when name arg is missing", func() {
-			delete(validargs, "name")
+			delete(validargs, "ingress-name")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
 			serverSession.Wait(time.Second)

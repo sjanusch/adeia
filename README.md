@@ -59,6 +59,7 @@ adeia \
 -v=4 \
 -logtostderr \
 -namespace=test \
+-ingress-name=test \
 -service-name=test \
 -service-port=test \
 -url=http://localhost:1337/example.json
