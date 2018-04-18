@@ -127,7 +127,7 @@ unknown - version unknown
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter service-port missing"))
 		})
-		It("returns error when service-port arg is missing", func() {
+		It("returns error when namespace arg is missing", func() {
 			delete(validargs, "namespace")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
