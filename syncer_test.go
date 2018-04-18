@@ -1,4 +1,4 @@
-// Copyright 2018 The adeia Authors. All rights reserved.
+// Copyright 2018 The adeia authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -40,7 +40,7 @@ var _ = Describe("Syncer", func() {
 	})
 
 	Describe("Sync", func() {
-		It("calls ingress fetcher", func() {
+		It("calls Ingress fetcher", func() {
 			Expect(fetcher.FetchCallCount()).To(Equal(0))
 			Expect(syncer.Sync()).To(BeNil())
 			Expect(fetcher.FetchCallCount()).To(Equal(1))
