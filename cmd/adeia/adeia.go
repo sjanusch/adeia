@@ -54,7 +54,6 @@ func main() {
 	}
 }
 
-// do
 func do() error {
 	if len(*urlPtr) == 0 {
 		return errors.New("parameter url missing")
