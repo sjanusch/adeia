@@ -95,7 +95,7 @@ func do() error {
 		},
 	}
 	if *dryRunPtr {
-		glog.V(2).Infof("dry-run=true => use print applier")
+		glog.V(2).Infof("param dry-run has value true => using print applier")
 		ingressSyncer.Applier = &ingress.PrintApplier{
 			Out: os.Stdout,
 		}
