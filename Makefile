@@ -25,10 +25,10 @@ REVISION 	:= $(shell git rev-parse HEAD)
 REVSHORT 	:= $(shell git rev-parse --short HEAD)
 USER 		:= $(shell whoami)
 
-V			?= 0
+V		?= 0
 NAMESPACES	?= debug
 
-DOCKER_TAGS := -t $(REGISTRY)/$(IMAGE):$(VERSION) -t $(REGISTRY)/$(IMAGE):latest
+DOCKER_TAGS 	:= -t $(REGISTRY)/$(IMAGE):$(VERSION) -t $(REGISTRY)/$(IMAGE):latest
 
 -include .env
 

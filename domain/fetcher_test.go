@@ -10,18 +10,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"testing"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/mocks"
 )
-
-func TestDomain(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Domain Suite")
-}
 
 var _ = Describe("Fetcher", func() {
 	var (

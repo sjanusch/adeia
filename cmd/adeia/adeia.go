@@ -20,14 +20,14 @@ import (
 )
 
 var (
-	versionPtr     = flag.Bool("version", false, "show version info")
-	urlPtr         = flag.String("url", "", "url to api")
+	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
 	ingressNamePtr = flag.String("ingress-name", "", "name for ingress")
+	kubeconfigPtr  = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	serviceNamePtr = flag.String("service-name", "", "service name for Ingress http-rule")
 	servicePortPtr = flag.String("service-port", "", "port for Ingress http-rule")
-	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
-	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
-	kubeconfigPtr  = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	urlPtr         = flag.String("url", "", "url to api")
+	versionPtr     = flag.Bool("version", false, "show version info")
 )
 
 func main() {
@@ -37,11 +37,10 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	if *versionPtr {
-		fmt.Printf("-- //S/M adeia --\n")
+		fmt.Println("-- //S/M adeia --")
 		version.PrintFull()
 		os.Exit(0)
 	}
-
 	if err := do(); err != nil {
 		type stackTracer interface {
 			StackTrace() errors.StackTrace
