@@ -10,6 +10,7 @@ import (
 	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
 	k8s_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8s_kubernetes "k8s.io/client-go/kubernetes"
+	k8s_rest "k8s.io/client-go/rest"
 	k8s_clientcmd "k8s.io/client-go/tools/clientcmd"
 )
 
@@ -21,13 +22,9 @@ type K8sApplier struct {
 
 // Apply a list of domains.
 func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
-	config, err := k8s_clientcmd.BuildConfigFromFlags("", a.Kubeconfig)
+	clientset, err := createClientset(a.Kubeconfig)
 	if err != nil {
-		return errors.Wrap(err, "build k8s config from flags failed")
-	}
-	clientset, err := k8s_kubernetes.NewForConfig(config)
-	if err != nil {
-		return errors.Wrap(err, "create k8s config failed")
+		return errors.Wrap(err, "create clientset failed")
 	}
 	_, err = clientset.ExtensionsV1beta1().Ingresses(a.Namespace).Get(ingress.Name, k8s_v1.GetOptions{})
 	if err != nil {
@@ -44,4 +41,21 @@ func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
 	}
 	glog.V(0).Infof("ingress %s updated successful", ingress.Name)
 	return nil
+}
+
+func createClientset(kubeconfig string) (k8s_kubernetes.Interface, error) {
+	config, err := createConfig(kubeconfig)
+	if err != nil {
+		return nil, errors.Wrap(err, "create k8s config failed")
+	}
+	return k8s_kubernetes.NewForConfig(config)
+}
+
+func createConfig(kubeconfig string) (*k8s_rest.Config, error) {
+	if len(kubeconfig) > 0 {
+		glog.V(4).Infof("create kube config from flags")
+		return k8s_clientcmd.BuildConfigFromFlags("", kubeconfig)
+	}
+	glog.V(4).Infof("create in cluster kube config")
+	return k8s_rest.InClusterConfig()
 }

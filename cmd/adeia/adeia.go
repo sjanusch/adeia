@@ -5,26 +5,24 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
-	"path/filepath"
 	"runtime"
 
 	flag "github.com/bborbe/flagenv"
 	"github.com/golang/glog"
 	"github.com/kolide/kit/version"
+	"github.com/pkg/errors"
 	"github.com/seibert-media/adeia"
 	"github.com/seibert-media/adeia/domain"
 	"github.com/seibert-media/adeia/ingress"
-	k8s_homedir "k8s.io/client-go/util/homedir"
 )
 
 var (
 	dryRunPtr      = flag.Bool("dry-run", false, "perform a trial run with no changes made and print ingress")
 	ingressNamePtr = flag.String("ingress-name", "", "name for ingress")
-	kubeconfigPtr  *string
+	kubeconfigPtr  = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	namespacePtr   = flag.String("namespace", "", "k8s namespace to deploy ingresses")
 	serviceNamePtr = flag.String("service-name", "", "service name for Ingress http-rule")
 	servicePortPtr = flag.String("service-port", "", "port for Ingress http-rule")
@@ -35,11 +33,6 @@ var (
 func main() {
 	defer glog.Flush()
 	glog.CopyStandardLogTo("info")
-	if home := k8s_homedir.HomeDir(); home != "" {
-		kubeconfigPtr = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		kubeconfigPtr = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
@@ -49,7 +42,14 @@ func main() {
 		os.Exit(0)
 	}
 	if err := do(); err != nil {
-		glog.Error(err)
+		type stackTracer interface {
+			StackTrace() errors.StackTrace
+		}
+		cause, ok := err.(stackTracer)
+		if ok {
+			glog.V(1).Info(cause.StackTrace())
+		}
+		glog.Fatal(err)
 		os.Exit(1)
 	}
 }
@@ -70,9 +70,13 @@ func do() error {
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
 	}
-	if len(*kubeconfigPtr) == 0 {
-		return errors.New("parameter kubeconfig missing")
-	}
+	glog.V(1).Infof("arg dry-run: %b", *dryRunPtr)
+	glog.V(1).Infof("arg kubeconfig: %s", *kubeconfigPtr)
+	glog.V(1).Infof("arg url: %s", *urlPtr)
+	glog.V(1).Infof("arg namespace: %s", *namespacePtr)
+	glog.V(1).Infof("arg ingress-name: %s", *ingressNamePtr)
+	glog.V(1).Infof("arg service-name: %s", *serviceNamePtr)
+	glog.V(1).Infof("arg service-port: %s", *servicePortPtr)
 
 	ingressSyncer := &adeia.Syncer{
 		Applier: &ingress.K8sApplier{
@@ -91,6 +95,7 @@ func do() error {
 		},
 	}
 	if *dryRunPtr {
+		glog.V(2).Infof("param dry-run has value true => using print applier")
 		ingressSyncer.Applier = &ingress.PrintApplier{
 			Out: os.Stdout,
 		}

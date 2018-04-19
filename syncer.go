@@ -5,6 +5,7 @@
 package adeia
 
 import (
+	"github.com/golang/glog"
 	"github.com/pkg/errors"
 	"github.com/seibert-media/adeia/domain"
 	"k8s.io/api/extensions/v1beta1"
@@ -38,5 +39,7 @@ func (i *Syncer) Sync() error {
 	if err != nil {
 		return errors.Wrap(err, "fetch domain failed")
 	}
+	glog.V(2).Infof("fetched %d domains", len(domains))
+	glog.V(4).Infof("domains = %v", domains)
 	return i.Applier.Apply(i.Creator.Create(domains))
 }
