@@ -22,7 +22,7 @@ type K8sApplier struct {
 
 // Apply a list of domains.
 func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
-	clientset, err := createClientSet(a.Kubeconfig)
+	clientset, err := createClientset(a.Kubeconfig)
 	if err != nil {
 		return errors.Wrap(err, "create clientset failed")
 	}
@@ -43,7 +43,7 @@ func (a *K8sApplier) Apply(ingress *k8s_v1beta1.Ingress) error {
 	return nil
 }
 
-func createClientSet(kubeconfig string) (k8s_kubernetes.Interface, error) {
+func createClientset(kubeconfig string) (k8s_kubernetes.Interface, error) {
 	config, err := createConfig(kubeconfig)
 	if err != nil {
 		return nil, errors.Wrap(err, "create k8s config failed")
@@ -56,6 +56,6 @@ func createConfig(kubeconfig string) (*k8s_rest.Config, error) {
 		glog.V(4).Infof("create kube config from flags")
 		return k8s_clientcmd.BuildConfigFromFlags("", kubeconfig)
 	}
-	glog.V(4).Infof("create kube config with in cluster config")
+	glog.V(4).Infof("create in cluster kube config")
 	return k8s_rest.InClusterConfig()
 }
