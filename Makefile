@@ -42,7 +42,7 @@ all: test install
 
 # install required tools and dependencies
 deps:
-	go get -u github.com/bborbe/docker_utils/bin/docker_remote_tag_exists
+	go get -u github.com/bborbe/docker-utils/cmd/docker-remote-tag-exists
 	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/golang/lint/golint
 	go get -u github.com/haya14busa/goverage
@@ -107,7 +107,7 @@ version:
 
 # install docker tag check
 docker_remote_tag_exists:
-	@go get github.com/bborbe/docker_utils/bin/docker_remote_tag_exists
+	@go get github.com/bborbe/docker-utils/cmd/docker-remote-tag-exists
 
 # trigger only if docker tag not present
 trigger: docker_remote_tag_exists
