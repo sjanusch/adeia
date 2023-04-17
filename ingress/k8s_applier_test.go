@@ -8,18 +8,18 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/seibert-media/adeia/ingress"
-	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
+	k8s_networkingv1 "k8s.io/api/networking/v1"
 )
 
 var _ = Describe("K8sApplier", func() {
 	var (
 		k8sApplier  *ingress.K8sApplier
-		testIngress *k8s_v1beta1.Ingress
+		testIngress *k8s_networkingv1.Ingress
 	)
 
 	BeforeEach(func() {
 		k8sApplier = &ingress.K8sApplier{}
-		testIngress = &k8s_v1beta1.Ingress{}
+		testIngress = &k8s_networkingv1.Ingress{}
 	})
 
 	Describe("Apply", func() {

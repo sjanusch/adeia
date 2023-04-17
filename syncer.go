@@ -8,7 +8,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/pkg/errors"
 	"github.com/seibert-media/adeia/domain"
-	"k8s.io/api/extensions/v1beta1"
+	k8s_networkingv1 "k8s.io/api/networking/v1"
 )
 
 //go:generate counterfeiter -o mocks/ingress_fetcher.go --fake-name IngressFetcher . fetcher
@@ -18,12 +18,12 @@ type fetcher interface {
 
 //go:generate counterfeiter -o mocks/ingress_applier.go --fake-name IngressApplier . applier
 type applier interface {
-	Apply(ingress *v1beta1.Ingress) error
+	Apply(ingress *k8s_networkingv1.Ingress) error
 }
 
 //go:generate counterfeiter -o 	mocks/ingress_creator.go --fake-name IngressCreator . creator
 type creator interface {
-	Create(domains []domain.Domain) *v1beta1.Ingress
+	Create(domains []domain.Domain) *k8s_networkingv1.Ingress
 }
 
 // Syncer creates Ingress for a list of domains

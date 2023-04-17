@@ -7,11 +7,11 @@ package ingress
 import (
 	"bytes"
 	"errors"
-
-	"github.com/ghodss/yaml"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
+
+	"github.com/ghodss/yaml"
+	k8s_networkingv1 "k8s.io/api/networking/v1"
 )
 
 var _ = Describe("the PrintApplier", func() {
@@ -26,21 +26,21 @@ var _ = Describe("the PrintApplier", func() {
 		}
 	})
 	It("returns no error", func() {
-		err = applier.Apply(&k8s_v1beta1.Ingress{})
+		err = applier.Apply(&k8s_networkingv1.Ingress{})
 		Expect(err).To(BeNil())
 	})
 	It("returns error if marshal fails", func() {
 		yamlMarshal = func(interface{}) ([]byte, error) { return nil, errors.New("banana") }
-		err = applier.Apply(&k8s_v1beta1.Ingress{})
+		err = applier.Apply(&k8s_networkingv1.Ingress{})
 		Expect(err).NotTo(BeNil())
 		Expect(err.Error()).To(Equal("marshal yaml failed: banana"))
 	})
 	It("returns content length greater zero", func() {
-		applier.Apply(&k8s_v1beta1.Ingress{})
+		applier.Apply(&k8s_networkingv1.Ingress{})
 		Expect(out.Len()).Should(BeNumerically(">", 0))
 	})
 	It("returns serialized ingress", func() {
-		applier.Apply(&k8s_v1beta1.Ingress{})
+		applier.Apply(&k8s_networkingv1.Ingress{})
 		Expect(out.String()).To(Equal(`metadata:
   creationTimestamp: null
 spec: {}

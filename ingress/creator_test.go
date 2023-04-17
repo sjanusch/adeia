@@ -34,9 +34,9 @@ var _ = Describe("Fetcher", func() {
 		})
 		It("returns Ingress object with correct annotations", func() {
 			ingress := domainConverter.Create(Domains)
-			annotation, ok := ingress.Annotations["kubernetes.io/ingress.class"]
+			spec, ok := ingress.spec["ingressClassName"]
 			Expect(ok).NotTo(BeFalse())
-			Expect(annotation).To(BeEquivalentTo("traefik"))
+			Expect(spec).To(BeEquivalentTo("traefik2"))
 		})
 	})
 })

@@ -6,7 +6,7 @@ package ingress
 
 import (
 	"github.com/seibert-media/adeia/domain"
-	k8s_v1beta1 "k8s.io/api/extensions/v1beta1"
+	k8s_networkingv1 "k8s.io/api/networking/v1"
 	k8s_metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8s_intstr "k8s.io/apimachinery/pkg/util/intstr"
 )
@@ -20,36 +20,37 @@ type Creator struct {
 }
 
 // Create Ingress for the given domains.
-func (c *Creator) Create(domains []domain.Domain) *k8s_v1beta1.Ingress {
-	return &k8s_v1beta1.Ingress{
+func (c *Creator) Create(domains []domain.Domain) *k8s_networkingv1.Ingress {
+	return &k8s_networkingv1.Ingress{
 		TypeMeta: k8s_metav1.TypeMeta{
-			APIVersion: "extensions/v1beta1",
+			APIVersion: "networking.k8s.io/v1",
 			Kind:       "Ingress",
 		},
 		ObjectMeta: k8s_metav1.ObjectMeta{
 			Annotations: map[string]string{
-				"kubernetes.io/ingress.class": "traefik",
+				"traefik.ingress.kubernetes.io/router.tls.certresolver": "default",
 			},
 			Name:      c.Ingressname,
 			Namespace: c.Namespace,
 		},
-		Spec: k8s_v1beta1.IngressSpec{
-			Rules: c.buildRuleSet(domains),
+		Spec: k8s_networkingv1.IngressSpec{
+			IngressClassName: "traefik2",
+			Rules:            c.buildRuleSet(domains),
 		},
 	}
 }
 
-func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_v1beta1.IngressRule {
-	var ingressRules []k8s_v1beta1.IngressRule
+func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.IngressRule {
+	var ingressRules []k8s_networkingv1.IngressRule
 	for _, domain := range domains {
-		ingressRule := k8s_v1beta1.IngressRule{
+		ingressRule := k8s_networkingv1.IngressRule{
 			Host: string(domain),
-			IngressRuleValue: k8s_v1beta1.IngressRuleValue{
-				HTTP: &k8s_v1beta1.HTTPIngressRuleValue{
-					Paths: []k8s_v1beta1.HTTPIngressPath{
+			IngressRuleValue: k8s_networkingv1.IngressRuleValue{
+				HTTP: &k8s_networkingv1.HTTPIngressRuleValue{
+					Paths: []k8s_networkingv1.HTTPIngressPath{
 						{
 							Path: "/",
-							Backend: k8s_v1beta1.IngressBackend{
+							Backend: k8s_networkingv1.IngressBackend{
 								ServiceName: c.Servicename,
 								ServicePort: k8s_intstr.Parse(c.Serviceport),
 							},

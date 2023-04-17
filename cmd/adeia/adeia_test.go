@@ -152,15 +152,16 @@ unknown - version unknown
 			Expect(err).To(BeNil())
 			serverSession.Wait(time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
-			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: extensions/v1beta1
+			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: traefik
+	traefik.ingress.kubernetes.io/router.tls.certresolver: default
   creationTimestamp: null
   name: test-name
   namespace: test-namespace
 spec:
+  ingressClassName: traefik2
   rules:
   - host: a.example.com
     http:
@@ -189,15 +190,16 @@ status:
 			Expect(err).To(BeNil())
 			serverSession.Wait(time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
-			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: extensions/v1beta1
+			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
   creationTimestamp: null
   name: superingress
   namespace: superspace
 spec:
+  ingressClassName: traefik2
   rules:
   - host: a.example.com
     http:
