@@ -194,7 +194,7 @@ status:
 kind: Ingress
 metadata:
   annotations:
-    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    	traefik.ingress.kubernetes.io/router.tls.certresolver: default
   creationTimestamp: null
   name: superingress
   namespace: superspace
