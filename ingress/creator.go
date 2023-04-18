@@ -5,10 +5,11 @@
 package ingress
 
 import (
+	"strconv"
+
 	"github.com/seibert-media/adeia/domain"
 	k8s_networkingv1 "k8s.io/api/networking/v1"
 	k8s_metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	k8s_intstr "k8s.io/apimachinery/pkg/util/intstr"
 )
 
 // Creator for transform domain to ingress
@@ -21,6 +22,7 @@ type Creator struct {
 
 // Create Ingress for the given domains.
 func (c *Creator) Create(domains []domain.Domain) *k8s_networkingv1.Ingress {
+	ingressClassName := "traefik2"
 	return &k8s_networkingv1.Ingress{
 		TypeMeta: k8s_metav1.TypeMeta{
 			APIVersion: "networking.k8s.io/v1",
@@ -34,7 +36,7 @@ func (c *Creator) Create(domains []domain.Domain) *k8s_networkingv1.Ingress {
 			Namespace: c.Namespace,
 		},
 		Spec: k8s_networkingv1.IngressSpec{
-			IngressClassName: "traefik2",
+			IngressClassName: &ingressClassName,
 			Rules:            c.buildRuleSet(domains),
 		},
 	}
@@ -42,6 +44,12 @@ func (c *Creator) Create(domains []domain.Domain) *k8s_networkingv1.Ingress {
 
 func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.IngressRule {
 	var ingressRules []k8s_networkingv1.IngressRule
+
+	port, err := strconv.ParseInt(c.Serviceport, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+
 	for _, domain := range domains {
 		ingressRule := k8s_networkingv1.IngressRule{
 			Host: string(domain),
@@ -51,8 +59,10 @@ func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.Ingre
 						{
 							Path: "/",
 							Backend: k8s_networkingv1.IngressBackend{
-								ServiceName: c.Servicename,
-								ServicePort: k8s_intstr.Parse(c.Serviceport),
+								Service: &k8s_networkingv1.IngressServiceBackend{
+									Name: c.Servicename,
+									Port: k8s_networkingv1.ServiceBackendPort{Number: int32(port)},
+								},
 							},
 						},
 					},

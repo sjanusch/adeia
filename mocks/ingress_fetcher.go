@@ -10,8 +10,9 @@ import (
 type IngressFetcher struct {
 	FetchStub        func() ([]domain.Domain, error)
 	fetchMutex       sync.RWMutex
-	fetchArgsForCall []struct{}
-	fetchReturns     struct {
+	fetchArgsForCall []struct {
+	}
+	fetchReturns struct {
 		result1 []domain.Domain
 		result2 error
 	}
@@ -26,16 +27,19 @@ type IngressFetcher struct {
 func (fake *IngressFetcher) Fetch() ([]domain.Domain, error) {
 	fake.fetchMutex.Lock()
 	ret, specificReturn := fake.fetchReturnsOnCall[len(fake.fetchArgsForCall)]
-	fake.fetchArgsForCall = append(fake.fetchArgsForCall, struct{}{})
+	fake.fetchArgsForCall = append(fake.fetchArgsForCall, struct {
+	}{})
+	stub := fake.FetchStub
+	fakeReturns := fake.fetchReturns
 	fake.recordInvocation("Fetch", []interface{}{})
 	fake.fetchMutex.Unlock()
-	if fake.FetchStub != nil {
-		return fake.FetchStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	return fake.fetchReturns.result1, fake.fetchReturns.result2
+	return fakeReturns.result1, fakeReturns.result2
 }
 
 func (fake *IngressFetcher) FetchCallCount() int {
@@ -44,7 +48,15 @@ func (fake *IngressFetcher) FetchCallCount() int {
 	return len(fake.fetchArgsForCall)
 }
 
+func (fake *IngressFetcher) FetchCalls(stub func() ([]domain.Domain, error)) {
+	fake.fetchMutex.Lock()
+	defer fake.fetchMutex.Unlock()
+	fake.FetchStub = stub
+}
+
 func (fake *IngressFetcher) FetchReturns(result1 []domain.Domain, result2 error) {
+	fake.fetchMutex.Lock()
+	defer fake.fetchMutex.Unlock()
 	fake.FetchStub = nil
 	fake.fetchReturns = struct {
 		result1 []domain.Domain
@@ -53,6 +65,8 @@ func (fake *IngressFetcher) FetchReturns(result1 []domain.Domain, result2 error)
 }
 
 func (fake *IngressFetcher) FetchReturnsOnCall(i int, result1 []domain.Domain, result2 error) {
+	fake.fetchMutex.Lock()
+	defer fake.fetchMutex.Unlock()
 	fake.FetchStub = nil
 	if fake.fetchReturnsOnCall == nil {
 		fake.fetchReturnsOnCall = make(map[int]struct {

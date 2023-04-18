@@ -5,45 +5,47 @@ import (
 	"sync"
 
 	"github.com/seibert-media/adeia/domain"
-	"k8s.io/api/extensions/v1beta1"
+	v1 "k8s.io/api/networking/v1"
 )
 
 type IngressCreator struct {
-	CreateStub        func(domains []domain.Domain) *v1beta1.Ingress
+	CreateStub        func([]domain.Domain) *v1.Ingress
 	createMutex       sync.RWMutex
 	createArgsForCall []struct {
-		domains []domain.Domain
+		arg1 []domain.Domain
 	}
 	createReturns struct {
-		result1 *v1beta1.Ingress
+		result1 *v1.Ingress
 	}
 	createReturnsOnCall map[int]struct {
-		result1 *v1beta1.Ingress
+		result1 *v1.Ingress
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *IngressCreator) Create(domains []domain.Domain) *v1beta1.Ingress {
-	var domainsCopy []domain.Domain
-	if domains != nil {
-		domainsCopy = make([]domain.Domain, len(domains))
-		copy(domainsCopy, domains)
+func (fake *IngressCreator) Create(arg1 []domain.Domain) *v1.Ingress {
+	var arg1Copy []domain.Domain
+	if arg1 != nil {
+		arg1Copy = make([]domain.Domain, len(arg1))
+		copy(arg1Copy, arg1)
 	}
 	fake.createMutex.Lock()
 	ret, specificReturn := fake.createReturnsOnCall[len(fake.createArgsForCall)]
 	fake.createArgsForCall = append(fake.createArgsForCall, struct {
-		domains []domain.Domain
-	}{domainsCopy})
-	fake.recordInvocation("Create", []interface{}{domainsCopy})
+		arg1 []domain.Domain
+	}{arg1Copy})
+	stub := fake.CreateStub
+	fakeReturns := fake.createReturns
+	fake.recordInvocation("Create", []interface{}{arg1Copy})
 	fake.createMutex.Unlock()
-	if fake.CreateStub != nil {
-		return fake.CreateStub(domains)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	return fake.createReturns.result1
+	return fakeReturns.result1
 }
 
 func (fake *IngressCreator) CreateCallCount() int {
@@ -52,28 +54,39 @@ func (fake *IngressCreator) CreateCallCount() int {
 	return len(fake.createArgsForCall)
 }
 
+func (fake *IngressCreator) CreateCalls(stub func([]domain.Domain) *v1.Ingress) {
+	fake.createMutex.Lock()
+	defer fake.createMutex.Unlock()
+	fake.CreateStub = stub
+}
+
 func (fake *IngressCreator) CreateArgsForCall(i int) []domain.Domain {
 	fake.createMutex.RLock()
 	defer fake.createMutex.RUnlock()
-	return fake.createArgsForCall[i].domains
+	argsForCall := fake.createArgsForCall[i]
+	return argsForCall.arg1
 }
 
-func (fake *IngressCreator) CreateReturns(result1 *v1beta1.Ingress) {
+func (fake *IngressCreator) CreateReturns(result1 *v1.Ingress) {
+	fake.createMutex.Lock()
+	defer fake.createMutex.Unlock()
 	fake.CreateStub = nil
 	fake.createReturns = struct {
-		result1 *v1beta1.Ingress
+		result1 *v1.Ingress
 	}{result1}
 }
 
-func (fake *IngressCreator) CreateReturnsOnCall(i int, result1 *v1beta1.Ingress) {
+func (fake *IngressCreator) CreateReturnsOnCall(i int, result1 *v1.Ingress) {
+	fake.createMutex.Lock()
+	defer fake.createMutex.Unlock()
 	fake.CreateStub = nil
 	if fake.createReturnsOnCall == nil {
 		fake.createReturnsOnCall = make(map[int]struct {
-			result1 *v1beta1.Ingress
+			result1 *v1.Ingress
 		})
 	}
 	fake.createReturnsOnCall[i] = struct {
-		result1 *v1beta1.Ingress
+		result1 *v1.Ingress
 	}{result1}
 }
 

@@ -4,14 +4,14 @@ package mocks
 import (
 	"sync"
 
-	"k8s.io/api/extensions/v1beta1"
+	v1 "k8s.io/api/networking/v1"
 )
 
 type IngressApplier struct {
-	ApplyStub        func(ingress *v1beta1.Ingress) error
+	ApplyStub        func(*v1.Ingress) error
 	applyMutex       sync.RWMutex
 	applyArgsForCall []struct {
-		ingress *v1beta1.Ingress
+		arg1 *v1.Ingress
 	}
 	applyReturns struct {
 		result1 error
@@ -23,21 +23,23 @@ type IngressApplier struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *IngressApplier) Apply(ingress *v1beta1.Ingress) error {
+func (fake *IngressApplier) Apply(arg1 *v1.Ingress) error {
 	fake.applyMutex.Lock()
 	ret, specificReturn := fake.applyReturnsOnCall[len(fake.applyArgsForCall)]
 	fake.applyArgsForCall = append(fake.applyArgsForCall, struct {
-		ingress *v1beta1.Ingress
-	}{ingress})
-	fake.recordInvocation("Apply", []interface{}{ingress})
+		arg1 *v1.Ingress
+	}{arg1})
+	stub := fake.ApplyStub
+	fakeReturns := fake.applyReturns
+	fake.recordInvocation("Apply", []interface{}{arg1})
 	fake.applyMutex.Unlock()
-	if fake.ApplyStub != nil {
-		return fake.ApplyStub(ingress)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	return fake.applyReturns.result1
+	return fakeReturns.result1
 }
 
 func (fake *IngressApplier) ApplyCallCount() int {
@@ -46,13 +48,22 @@ func (fake *IngressApplier) ApplyCallCount() int {
 	return len(fake.applyArgsForCall)
 }
 
-func (fake *IngressApplier) ApplyArgsForCall(i int) *v1beta1.Ingress {
+func (fake *IngressApplier) ApplyCalls(stub func(*v1.Ingress) error) {
+	fake.applyMutex.Lock()
+	defer fake.applyMutex.Unlock()
+	fake.ApplyStub = stub
+}
+
+func (fake *IngressApplier) ApplyArgsForCall(i int) *v1.Ingress {
 	fake.applyMutex.RLock()
 	defer fake.applyMutex.RUnlock()
-	return fake.applyArgsForCall[i].ingress
+	argsForCall := fake.applyArgsForCall[i]
+	return argsForCall.arg1
 }
 
 func (fake *IngressApplier) ApplyReturns(result1 error) {
+	fake.applyMutex.Lock()
+	defer fake.applyMutex.Unlock()
 	fake.ApplyStub = nil
 	fake.applyReturns = struct {
 		result1 error
@@ -60,6 +71,8 @@ func (fake *IngressApplier) ApplyReturns(result1 error) {
 }
 
 func (fake *IngressApplier) ApplyReturnsOnCall(i int, result1 error) {
+	fake.applyMutex.Lock()
+	defer fake.applyMutex.Unlock()
 	fake.ApplyStub = nil
 	if fake.applyReturnsOnCall == nil {
 		fake.applyReturnsOnCall = make(map[int]struct {

@@ -1,4 +1,4 @@
-FROM golang:1.10
+FROM golang:1.19
 
 LABEL maintainer = "//SEIBERT/MEDIA GmbH <docker@seibert-media.net>"
 LABEL type = "public"

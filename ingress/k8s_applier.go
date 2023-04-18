@@ -5,6 +5,8 @@
 package ingress
 
 import (
+	"context"
+
 	"github.com/golang/glog"
 	"github.com/pkg/errors"
 	k8s_networkingv1 "k8s.io/api/networking/v1"
@@ -22,20 +24,21 @@ type K8sApplier struct {
 
 // Apply a list of domains.
 func (a *K8sApplier) Apply(ingress *k8s_networkingv1.Ingress) error {
+	ctx := context.Background()
 	clientset, err := createClientset(a.Kubeconfig)
 	if err != nil {
 		return errors.Wrap(err, "create clientset failed")
 	}
-	_, err = clientset.NetworkingV1().Ingresses(a.Namespace).Get(ingress.Name, k8s_v1.GetOptions{})
+	_, err = clientset.NetworkingV1().Ingresses(a.Namespace).Get(ctx, ingress.Name, k8s_v1.GetOptions{})
 	if err != nil {
-		_, err = clientset.NetworkingV1().Ingresses(a.Namespace).Create(ingress)
+		_, err = clientset.NetworkingV1().Ingresses(a.Namespace).Create(ctx, ingress, k8s_v1.CreateOptions{})
 		if err != nil {
 			return errors.Wrap(err, "create Ingress failed")
 		}
 		glog.V(0).Infof("ingress %s created successful", ingress.Name)
 		return nil
 	}
-	_, err = clientset.NetworkingV1().Ingresses(a.Namespace).Update(ingress)
+	_, err = clientset.NetworkingV1().Ingresses(a.Namespace).Update(ctx, ingress, k8s_v1.UpdateOptions{})
 	if err != nil {
 		return errors.Wrap(err, "update Ingress failed")
 	}

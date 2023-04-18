@@ -44,10 +44,10 @@ all: test install
 deps:
 	go get -u github.com/bborbe/docker-utils/cmd/docker-remote-tag-exists
 	go get -u github.com/golang/dep/cmd/dep
-	go get -u github.com/golang/lint/golint
+	go get -u golang.org/x/lint/golint
 	go get -u github.com/haya14busa/goverage
 	go get -u github.com/kisielk/errcheck
-	go get -u github.com/maxbrunsfeld/counterfeiter
+	go get -u github.com/maxbrunsfeld/counterfeiter/v6
 	go get -u github.com/onsi/ginkgo/ginkgo
 	go get -u github.com/onsi/gomega
 	go get -u github.com/schrej/godacov
@@ -144,7 +144,7 @@ vet:
 
 # lint entire repo (excluding vendor)
 lint:
-	@go get github.com/golang/lint/golint
+	@go get golang.org/x/lint/golint
 	@golint -min_confidence 1 $(shell go list ./... | grep -v /vendor/)
 
 # errcheck entire repo (excluding vendor)
@@ -158,5 +158,5 @@ cover:
 	goverage -v -coverprofile=coverage.out $(shell go list ./... | grep -v /vendor/)
 
 generate:
-	@go get github.com/maxbrunsfeld/counterfeiter
+	@go get github.com/maxbrunsfeld/counterfeiter/v6
 	@go generate ./...
