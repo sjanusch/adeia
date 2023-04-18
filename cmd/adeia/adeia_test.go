@@ -21,6 +21,7 @@ import (
 var pathToServerBinary string
 var serverSession *gexec.Session
 var server *ghttp.Server
+var duration = 3 * time.Second
 
 var _ = BeforeSuite(func() {
 	var err error
@@ -79,7 +80,7 @@ var _ = Describe("the adeia", func() {
 		It("prints version string", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, "-version"), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
 			Expect(serverSession.Out).To(gbytes.Say(`-- //S/M adeia --
 unknown - version unknown
@@ -87,7 +88,7 @@ unknown - version unknown
   revision: 	unknown
   build date: 	unknown
   build user: 	unknown
-  go version: 	unknown
+  go version: 	go1.20.1
 `))
 		})
 	})
@@ -95,20 +96,20 @@ unknown - version unknown
 		It("returns with exitcode != 0 if no parameters have been given", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 		})
 		It("returns with exitcode 0 if called with valid args", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
 		})
 		It("returns error when service-name arg is missing", func() {
 			delete(validargs, "service-name")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter service-name missing"))
 		})
@@ -116,7 +117,7 @@ unknown - version unknown
 			delete(validargs, "ingress-name")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter name missing"))
 		})
@@ -124,7 +125,7 @@ unknown - version unknown
 			delete(validargs, "service-port")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter service-port missing"))
 		})
@@ -132,7 +133,7 @@ unknown - version unknown
 			delete(validargs, "namespace")
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).NotTo(Equal(0))
 			Expect(serverSession.Err).To(gbytes.Say("parameter namespace missing"))
 		})
@@ -141,7 +142,7 @@ unknown - version unknown
 		It("call given url", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
 			Expect(len(server.ReceivedRequests())).To(Equal(1))
 		})
@@ -150,13 +151,13 @@ unknown - version unknown
 		It("writes Ingress object to stdout", func() {
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
 			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-		traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
   creationTimestamp: null
   name: test-name
   namespace: test-namespace
@@ -167,16 +168,22 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: test-service
-          servicePort: 8080
+          service:
+            name: test-service
+            port:
+              number: 8080
         path: /
+        pathType: null
   - host: b.example.com
     http:
       paths:
       - backend:
-          serviceName: test-service
-          servicePort: 8080
+          service:
+            name: test-service
+            port:
+              number: 8080
         path: /
+        pathType: null
 status:
   loadBalancer: {}`))
 		})
@@ -188,13 +195,13 @@ status:
 			validargs["namespace"] = "superspace"
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
 			Expect(err).To(BeNil())
-			serverSession.Wait(time.Second)
+			serverSession.Wait(duration * time.Second)
 			Expect(serverSession.ExitCode()).To(Equal(0))
 			Expect(serverSession.Out).To(gbytes.Say(`apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    	traefik.ingress.kubernetes.io/router.tls.certresolver: default
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
   creationTimestamp: null
   name: superingress
   namespace: superspace
@@ -205,16 +212,22 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: superservicename
-          servicePort: superport
+          service:
+            name: superservicename
+            port:
+              number: 8080
         path: /
+        pathType: null
   - host: b.example.com
     http:
       paths:
       - backend:
-          serviceName: superservicename
-          servicePort: superport
+          service:
+            name: superservicename
+            port:
+              number: 8080
         path: /
+        pathType: null
 status:
   loadBalancer: {}`))
 		})
@@ -230,7 +243,7 @@ status:
 				cmd.Env = []string{"VERSION=true"}
 				serverSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).To(BeNil())
-				serverSession.Wait(time.Second)
+				serverSession.Wait(duration * time.Second)
 				Expect(serverSession.ExitCode()).To(Equal(0))
 			})
 		})
@@ -245,7 +258,7 @@ status:
 				cmd.Env = []string{"VERSION=false"}
 				serverSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).To(BeNil())
-				serverSession.Wait(time.Second)
+				serverSession.Wait(duration * time.Second)
 				Expect(serverSession.ExitCode()).To(Equal(0))
 			})
 		})
