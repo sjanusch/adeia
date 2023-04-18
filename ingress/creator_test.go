@@ -37,7 +37,7 @@ var _ = Describe("Fetcher", func() {
 		It("returns Ingress object with correct annotations", func() {
 			ingress := domainConverter.Create(Domains)
 			ingressClassName := "traefik2"
-			Expect(*ingress.Spec.IngressClassName).To(Equal(&ingressClassName))
+			Expect(*ingress.Spec.IngressClassName).To(Equal(ingressClassName))
 		})
 	})
 })

@@ -183,7 +183,7 @@ status:
 
 		It("call with dry run and different Ingress specs", func() {
 			validargs["ingress-name"] = "superingress"
-			validargs["service-port"] = "superport"
+			validargs["service-port"] = "8080"
 			validargs["service-name"] = "superservicename"
 			validargs["namespace"] = "superspace"
 			serverSession, err = gexec.Start(exec.Command(pathToServerBinary, validargs.list()...), GinkgoWriter, GinkgoWriter)
