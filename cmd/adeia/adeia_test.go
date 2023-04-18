@@ -156,7 +156,7 @@ unknown - version unknown
 kind: Ingress
 metadata:
   annotations:
-	traefik.ingress.kubernetes.io/router.tls.certresolver: default
+		traefik.ingress.kubernetes.io/router.tls.certresolver: default
   creationTimestamp: null
   name: test-name
   namespace: test-namespace

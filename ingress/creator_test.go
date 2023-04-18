@@ -18,7 +18,9 @@ var _ = Describe("Fetcher", func() {
 	)
 
 	BeforeEach(func() {
-		domainConverter = &ingress.Creator{}
+		domainConverter = &ingress.Creator{
+			Serviceport: "8080",
+		}
 	})
 
 	Describe("Convert", func() {

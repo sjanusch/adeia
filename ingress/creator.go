@@ -5,6 +5,7 @@
 package ingress
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/seibert-media/adeia/domain"
@@ -47,7 +48,8 @@ func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.Ingre
 
 	port, err := strconv.ParseInt(c.Serviceport, 10, 64)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error parsing port")
+		return nil
 	}
 
 	for _, domain := range domains {
