@@ -5,8 +5,6 @@
 package ingress
 
 import (
-	"fmt"
-
 	"github.com/seibert-media/adeia/domain"
 	k8s_networkingv1 "k8s.io/api/networking/v1"
 	k8s_metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -58,7 +56,6 @@ func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.Ingre
 								Service: &k8s_networkingv1.IngressServiceBackend{
 									Name: c.Servicename,
 									Port: k8s_networkingv1.ServiceBackendPort{
-										Name:   fmt.Sprintf("%s-%s", string(domain), c.Servicename),
 										Number: c.Serviceport,
 									},
 								},

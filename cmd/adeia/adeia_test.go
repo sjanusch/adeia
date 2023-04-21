@@ -171,7 +171,6 @@ spec:
           service:
             name: test-service
             port:
-              name: a.example.com-test-service
               number: 8080
         path: /
         pathType: Prefix
@@ -182,7 +181,6 @@ spec:
           service:
             name: test-service
             port:
-              name: b.example.com-test-service
               number: 8080
         path: /
         pathType: Prefix
@@ -217,7 +215,6 @@ spec:
           service:
             name: superservicename
             port:
-              name: a.example.com-superservicename
               number: 8080
         path: /
         pathType: Prefix
@@ -228,7 +225,6 @@ spec:
           service:
             name: superservicename
             port:
-              name: b.example.com-superservicename
               number: 8080
         path: /
         pathType: Prefix
