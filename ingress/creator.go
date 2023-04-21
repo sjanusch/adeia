@@ -42,7 +42,6 @@ func (c *Creator) Create(domains []domain.Domain) *k8s_networkingv1.Ingress {
 
 func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.IngressRule {
 	var ingressRules []k8s_networkingv1.IngressRule
-	pathType := k8s_networkingv1.PathTypePrefix
 	for _, domain := range domains {
 		ingressRule := k8s_networkingv1.IngressRule{
 			Host: string(domain),
@@ -50,8 +49,7 @@ func (c *Creator) buildRuleSet(domains []domain.Domain) []k8s_networkingv1.Ingre
 				HTTP: &k8s_networkingv1.HTTPIngressRuleValue{
 					Paths: []k8s_networkingv1.HTTPIngressPath{
 						{
-							Path:     "/",
-							PathType: &pathType,
+							Path: "/",
 							Backend: k8s_networkingv1.IngressBackend{
 								Service: &k8s_networkingv1.IngressServiceBackend{
 									Name: c.Servicename,

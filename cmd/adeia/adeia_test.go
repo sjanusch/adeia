@@ -173,7 +173,7 @@ spec:
             port:
               number: 8080
         path: /
-        pathType: Prefix
+        pathType: null
   - host: b.example.com
     http:
       paths:
@@ -183,7 +183,7 @@ spec:
             port:
               number: 8080
         path: /
-        pathType: Prefix
+        pathType: null
 status:
   loadBalancer: {}`))
 		})
@@ -217,7 +217,7 @@ spec:
             port:
               number: 8080
         path: /
-        pathType: Prefix
+        pathType: null
   - host: b.example.com
     http:
       paths:
@@ -227,7 +227,7 @@ spec:
             port:
               number: 8080
         path: /
-        pathType: Prefix
+        pathType: null
 status:
   loadBalancer: {}`))
 		})
