@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strconv"
 
 	flag "github.com/bborbe/flagenv"
 	"github.com/golang/glog"
@@ -55,6 +56,9 @@ func main() {
 }
 
 func do() error {
+	var port int64
+	var err error
+
 	if len(*urlPtr) == 0 {
 		return errors.New("parameter url missing")
 	}
@@ -66,6 +70,11 @@ func do() error {
 	}
 	if len(*servicePortPtr) == 0 {
 		return errors.New("parameter service-port missing")
+	} else {
+		port, err = strconv.ParseInt(*servicePortPtr, 10, 64)
+		if err != nil {
+			return errors.New("Error parsing port value")
+		}
 	}
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
@@ -85,7 +94,7 @@ func do() error {
 		},
 		Creator: &ingress.Creator{
 			Ingressname: *ingressNamePtr,
-			Serviceport: *servicePortPtr,
+			Serviceport: int32(port),
 			Servicename: *serviceNamePtr,
 			Namespace:   *namespacePtr,
 		},
