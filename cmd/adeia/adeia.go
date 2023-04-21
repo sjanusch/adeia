@@ -70,11 +70,10 @@ func do() error {
 	}
 	if len(*servicePortPtr) == 0 {
 		return errors.New("parameter service-port missing")
-	} else {
-		port, err = strconv.ParseInt(*servicePortPtr, 10, 64)
-		if err != nil {
-			return errors.New("Error parsing port value")
-		}
+	}
+	port, err = strconv.ParseInt(*servicePortPtr, 10, 64)
+	if err != nil {
+		return errors.New("Error parsing service-port value")
 	}
 	if len(*namespacePtr) == 0 {
 		return errors.New("parameter namespace missing")
