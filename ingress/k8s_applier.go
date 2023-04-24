@@ -46,7 +46,7 @@ func (a *K8sApplier) Apply(ingress *k8s_networkingv1.Ingress) error {
 	return nil
 }
 
-func createClientset(kubeconfig string) (k8s_kubernetes.Interface, error) {
+func createClientset(kubeconfig string) (*k8s_kubernetes.Clientset, error) {
 	config, err := createConfig(kubeconfig)
 	if err != nil {
 		return nil, errors.Wrap(err, "create k8s config failed")
